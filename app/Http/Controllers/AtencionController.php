@@ -242,7 +242,7 @@ class AtencionController extends Controller
 
     public function edit(string $id)
     {
-        $atencion = Atencion::with(['paciente.carrera', 'motivo', 'medicamentos'])->findOrFail($id);
+        $atencion = Atencion::with(['paciente.carrera', 'paciente.nivel', 'motivo', 'medicamentos'])->findOrFail($id);
         $motivos = MotivoConsulta::all();
         $medicamentos = Medicamento::all();
         return view('atenciones.edit', compact('atencion', 'motivos', 'medicamentos'));
