@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('niveles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('paciente_id')->unique()->constrained('pacientes')->onDelete('cascade');
-            $table->enum('categoria', ['Escuela', 'Otros']);
+            $table->string('categoria', 50); // Acepta: Escuela, Tecnológico, Pedagógico, Otros
             $table->enum('nivel_escuela', ['INICIAL', 'PRIMARIA', 'SECUNDARIA'])->nullable(); // Solo para Escuela
             $table->string('grado', 50)->nullable(); // Para PRIMARIA y SECUNDARIA
             $table->string('anios', 50)->nullable(); // Para INICIAL
