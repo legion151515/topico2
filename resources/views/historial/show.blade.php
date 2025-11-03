@@ -40,8 +40,14 @@
                             @if($paciente->carrera)
                                 <span class="badge badge-info">{{ $paciente->carrera->acronimo }}</span>
                                 {{ $paciente->carrera->nombre }}
+                            @elseif($paciente->nivel && $paciente->nivel->nivel_escuela)
+                                <span class="badge badge-success">Escuela</span>
+                                {{ $paciente->nivel->nivel_escuela }}
+                            @elseif($paciente->nivel && $paciente->nivel->otros_especificacion)
+                                <span class="badge badge-warning">Otros</span>
+                                {{ $paciente->nivel->otros_especificacion }}
                             @else
-                                {{ $paciente->otros_especificacion ?? 'No especificado' }}
+                                No especificado
                             @endif
                         </p>
                     </div>

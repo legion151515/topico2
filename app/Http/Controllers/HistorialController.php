@@ -27,7 +27,7 @@ class HistorialController extends Controller
         ]);
 
         $paciente = Paciente::where('dni', $request->dni)
-            ->with(['carrera', 'atenciones.motivo', 'atenciones.medicamentos'])
+            ->with(['carrera', 'nivel', 'atenciones.motivo', 'atenciones.medicamentos'])
             ->first();
 
         if (!$paciente) {
@@ -43,7 +43,7 @@ class HistorialController extends Controller
      */
     public function generarPDF($paciente_id)
     {
-        $paciente = Paciente::with(['carrera', 'atenciones.motivo', 'atenciones.medicamentos'])
+        $paciente = Paciente::with(['carrera', 'nivel', 'atenciones.motivo', 'atenciones.medicamentos'])
             ->findOrFail($paciente_id);
 
         $pdf = Pdf::loadView('historial.pdf', compact('paciente'));

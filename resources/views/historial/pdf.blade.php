@@ -234,8 +234,12 @@
                 <span>
                     @if($paciente->carrera)
                         {{ $paciente->carrera->nombre }} ({{ $paciente->carrera->acronimo }})
+                    @elseif($paciente->nivel && $paciente->nivel->nivel_escuela)
+                        Escuela - {{ $paciente->nivel->nivel_escuela }}
+                    @elseif($paciente->nivel && $paciente->nivel->otros_especificacion)
+                        Otros - {{ $paciente->nivel->otros_especificacion }}
                     @else
-                        {{ $paciente->otros_especificacion ?? 'No especificado' }}
+                        No especificado
                     @endif
                 </span>
             </div>
