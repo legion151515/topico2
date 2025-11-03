@@ -18,13 +18,19 @@ class ReporteController extends Controller
 
     public function area()
     {
-        $atenciones = Atencion::with('paciente.carrera')->get();
+        $atenciones = Atencion::with('paciente.carrera', 'paciente.nivel')->get();
 
         $areas = $atenciones->groupBy(function($atencion) {
             if ($atencion->paciente && $atencion->paciente->carrera) {
                 return $atencion->paciente->carrera->nombre;
+            } elseif ($atencion->paciente && $atencion->paciente->nivel) {
+                if ($atencion->paciente->nivel->nivel_escuela) {
+                    return 'Escuela - ' . $atencion->paciente->nivel->nivel_escuela;
+                } elseif ($atencion->paciente->nivel->otros_especificacion) {
+                    return 'Otros - ' . $atencion->paciente->nivel->otros_especificacion;
+                }
             }
-            return $atencion->paciente->otros_especificacion ?? 'Sin especificar';
+            return 'Sin especificar';
         })->map(function($group) {
             return $group->count();
         });
@@ -54,13 +60,19 @@ class ReporteController extends Controller
     // Generar PDF de reporte por área
     public function areaPDF()
     {
-        $atenciones = Atencion::with('paciente.carrera')->get();
+        $atenciones = Atencion::with('paciente.carrera', 'paciente.nivel')->get();
 
         $areas = $atenciones->groupBy(function($atencion) {
             if ($atencion->paciente && $atencion->paciente->carrera) {
                 return $atencion->paciente->carrera->nombre;
+            } elseif ($atencion->paciente && $atencion->paciente->nivel) {
+                if ($atencion->paciente->nivel->nivel_escuela) {
+                    return 'Escuela - ' . $atencion->paciente->nivel->nivel_escuela;
+                } elseif ($atencion->paciente->nivel->otros_especificacion) {
+                    return 'Otros - ' . $atencion->paciente->nivel->otros_especificacion;
+                }
             }
-            return $atencion->paciente->otros_especificacion ?? 'Sin especificar';
+            return 'Sin especificar';
         })->map(function($group) {
             return $group->count();
         });
