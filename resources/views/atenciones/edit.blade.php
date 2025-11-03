@@ -320,6 +320,11 @@
 
         if (categoria === 'Otros') {
             divOtros.style.display = 'block';
+            // Llenar el campo otros_especificacion con el valor guardado
+            if (datosAtencion.otros_especificacion) {
+                document.getElementById('otros_especificacion').value = datosAtencion.otros_especificacion;
+                console.log('Otros especificacion cargado:', datosAtencion.otros_especificacion);
+            }
         } else if (categoria === 'Escuela') {
             // Para Escuela, mostrar nivel escuela y luego los campos correspondientes
             divNivelEscuela.style.display = 'block';
@@ -432,6 +437,10 @@
 
         if (categoria === 'Otros') {
             divOtros.style.display = 'block';
+            // Llenar el campo otros_especificacion si existe en los datos
+            if (datosAtencion.otros_especificacion) {
+                document.getElementById('otros_especificacion').value = datosAtencion.otros_especificacion;
+            }
         } else if (categoria === 'Escuela') {
             // Para "Escuela", mostrar select de nivel escuela (INICIAL/PRIMARIA/SECUNDARIA)
             divNivelEscuela.style.display = 'block';
