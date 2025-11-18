@@ -167,6 +167,12 @@ class AtencionController extends Controller
     }
 
     // Crear atención (guardando snapshot de datos del paciente)
+    // Validar motivo_id: si es 0 o vacío, debe ser NULL para evitar error de foreign key
+    $motivoId = null;
+    if (!empty($request->motivo_id) && $request->motivo_id != 0 && $request->motivo_id !== '0') {
+        $motivoId = $request->motivo_id;
+    }
+
     $atencion = Atencion::create([
         'paciente_id' => $paciente->id,
         'categoria' => $request->categoria,        // Snapshot: categoría al momento de la atención
@@ -176,7 +182,7 @@ class AtencionController extends Controller
         'nivel_escuela' => $request->nivel_escuela, // Snapshot: nivel escuela (INICIAL/PRIMARIA/SECUNDARIA)
         'anios' => $request->anios,                // Snapshot: años para nivel INICIAL
         'otros_especificacion' => $request->otros_especificacion, // Snapshot: especificación para categoría "Otros"
-        'motivo_id' => $request->motivo_id,
+        'motivo_id' => $motivoId,                  // NULL si es "Otros (especificar)", o el ID válido del motivo
         'motivo_otro' => $request->motivo_otro,
         'fecha' => $request->fecha ?? now()->format('Y-m-d'),
         'hora_entrada' => $request->hora_entrada,
@@ -274,6 +280,12 @@ class AtencionController extends Controller
         }
 
         // Actualizar atención (incluyendo snapshot de datos del paciente)
+        // Validar motivo_id: si es 0 o vacío, debe ser NULL para evitar error de foreign key
+        $motivoId = null;
+        if (!empty($request->motivo_id) && $request->motivo_id != 0 && $request->motivo_id !== '0') {
+            $motivoId = $request->motivo_id;
+        }
+
         $atencion->update([
             'categoria' => $request->categoria,
             'semestre' => $request->semestre,
@@ -281,7 +293,7 @@ class AtencionController extends Controller
             'nivel_escuela' => $request->nivel_escuela,
             'anios' => $request->anios,
             'otros_especificacion' => $request->otros_especificacion,
-            'motivo_id' => $request->motivo_id,
+            'motivo_id' => $motivoId,  // NULL si es "Otros (especificar)", o el ID válido del motivo
             'motivo_otro' => $request->motivo_otro,
             'fecha' => $request->fecha,
             'hora_entrada' => $request->hora_entrada,
