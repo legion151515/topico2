@@ -49,7 +49,8 @@ class ReporteMensualExport implements FromCollection, WithHeadings, WithMapping,
         return [
             '#',
             'Fecha',
-            'Hora Entrada',
+            'Hora',
+            'Nombre y Apellidos',
             'Carrera',
             'Semestre',
             'Edad',
@@ -66,8 +67,16 @@ class ReporteMensualExport implements FromCollection, WithHeadings, WithMapping,
         static $index = 0;
         $index++;
 
+        // Nombre completo
+        $nombreCompleto = '-';
+        if ($atencion->paciente) {
+            $nombreCompleto = trim($atencion->paciente->nombres . ' ' .
+                                 $atencion->paciente->apellido_paterno . ' ' .
+                                 $atencion->paciente->apellido_materno);
+        }
+
         // Carrera
-        $carrera = 'N/A';
+        $carrera = '-';
         if ($atencion->paciente && $atencion->paciente->carrera) {
             $carrera = $atencion->paciente->carrera->acronimo;
         } elseif ($atencion->paciente && $atencion->paciente->nivel) {
@@ -79,19 +88,19 @@ class ReporteMensualExport implements FromCollection, WithHeadings, WithMapping,
         }
 
         // Semestre
-        $semestre = 'N/A';
+        $semestre = '-';
         if ($atencion->paciente && $atencion->paciente->semestre) {
             $semestre = $atencion->paciente->semestre . '°';
         }
 
         // Edad
-        $edad = 'N/A';
+        $edad = '-';
         if ($atencion->paciente && $atencion->paciente->fecha_nacimiento) {
             $edad = Carbon::parse($atencion->paciente->fecha_nacimiento)->age . ' años';
         }
 
         // Motivo
-        $motivo = 'N/A';
+        $motivo = '-';
         if ($atencion->motivo) {
             $motivo = $atencion->motivo->nombre;
         } elseif ($atencion->motivo_otro) {
@@ -102,7 +111,7 @@ class ReporteMensualExport implements FromCollection, WithHeadings, WithMapping,
         $medicamentos = 'Sin medicamentos';
         if ($atencion->medicamentos && $atencion->medicamentos->count() > 0) {
             $medicamentos = $atencion->medicamentos->map(function ($med) {
-                return $med->nombre . ' (' . $med->pivot->cantidad . ')';
+                return $med->nombre . ' (Cant: ' . $med->pivot->cantidad . ')';
             })->implode(', ');
         }
 
@@ -110,6 +119,7 @@ class ReporteMensualExport implements FromCollection, WithHeadings, WithMapping,
             $index,
             Carbon::parse($atencion->fecha)->format('d/m/Y'),
             Carbon::parse($atencion->hora_entrada)->format('H:i'),
+            $nombreCompleto,
             $carrera,
             $semestre,
             $edad,
@@ -164,12 +174,13 @@ class ReporteMensualExport implements FromCollection, WithHeadings, WithMapping,
         return [
             'A' => 5,   // #
             'B' => 12,  // Fecha
-            'C' => 12,  // Hora
-            'D' => 15,  // Carrera
-            'E' => 10,  // Semestre
-            'F' => 10,  // Edad
-            'G' => 30,  // Motivo
-            'H' => 40,  // Medicamentos
+            'C' => 10,  // Hora
+            'D' => 30,  // Nombre y Apellidos
+            'E' => 12,  // Carrera
+            'F' => 10,  // Semestre
+            'G' => 10,  // Edad
+            'H' => 30,  // Motivo
+            'I' => 40,  // Medicamentos
         ];
     }
 }

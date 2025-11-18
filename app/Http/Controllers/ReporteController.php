@@ -8,6 +8,7 @@ use App\Models\Medicamento;
 use App\Models\MotivoConsulta;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReporteController extends Controller
 {
@@ -195,7 +196,7 @@ class ReporteController extends Controller
         $anio = $request->anio;
         $nombreMes = $this->obtenerNombreMes($mes);
 
-        return \Excel::download(
+        return Excel::download(
             new \App\Exports\ReporteMensualExport($mes, $anio),
             'Reporte_Mensual_' . $nombreMes . '_' . $anio . '.xlsx'
         );
@@ -278,7 +279,7 @@ class ReporteController extends Controller
 
         $anio = $request->anio;
 
-        return \Excel::download(
+        return Excel::download(
             new \App\Exports\ReporteAnualExport($anio),
             'Reporte_Anual_' . $anio . '.xlsx'
         );

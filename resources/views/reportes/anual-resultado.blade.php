@@ -31,13 +31,14 @@
                 <span class="badge badge-primary badge-lg">{{ $atenciones->count() }}</span>
             </div>
 
-            <div style="overflow-x: auto;">
+            <div class="table-responsive">
                 <table class="table table-striped" style="font-size: 14px;">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Fecha</th>
-                            <th>Hora Entrada</th>
+                            <th>Hora</th>
+                            <th>Nombre y Apellidos</th>
                             <th>Carrera</th>
                             <th>Semestre</th>
                             <th>Edad</th>
@@ -52,6 +53,13 @@
                                 <td>{{ \Carbon\Carbon::parse($atencion->fecha)->format('d/m/Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($atencion->hora_entrada)->format('H:i') }}</td>
                                 <td>
+                                    @if($atencion->paciente)
+                                        <strong>{{ $atencion->paciente->nombres }} {{ $atencion->paciente->apellido_paterno }} {{ $atencion->paciente->apellido_materno }}</strong>
+                                    @else
+                                        <span class="text-muted">Sin datos</span>
+                                    @endif
+                                </td>
+                                <td>
                                     @if($atencion->paciente && $atencion->paciente->carrera)
                                         <span class="badge badge-info">{{ $atencion->paciente->carrera->acronimo }}</span>
                                     @elseif($atencion->paciente && $atencion->paciente->nivel)
@@ -60,24 +68,24 @@
                                         @elseif($atencion->paciente->nivel->otros_especificacion)
                                             <span class="badge badge-warning">Otros</span>
                                         @else
-                                            <span class="badge badge-secondary">N/A</span>
+                                            -
                                         @endif
                                     @else
-                                        <span class="badge badge-secondary">N/A</span>
+                                        -
                                     @endif
                                 </td>
                                 <td>
                                     @if($atencion->paciente && $atencion->paciente->semestre)
                                         {{ $atencion->paciente->semestre }}°
                                     @else
-                                        N/A
+                                        -
                                     @endif
                                 </td>
                                 <td>
                                     @if($atencion->paciente && $atencion->paciente->fecha_nacimiento)
                                         {{ \Carbon\Carbon::parse($atencion->paciente->fecha_nacimiento)->age }} años
                                     @else
-                                        N/A
+                                        -
                                     @endif
                                 </td>
                                 <td>
@@ -86,14 +94,14 @@
                                     @elseif($atencion->motivo_otro)
                                         {{ $atencion->motivo_otro }}
                                     @else
-                                        N/A
+                                        -
                                     @endif
                                 </td>
                                 <td>
                                     @if($atencion->medicamentos && $atencion->medicamentos->count() > 0)
                                         <ul style="margin: 0; padding-left: 20px;">
                                             @foreach($atencion->medicamentos as $med)
-                                                <li>{{ $med->nombre }} ({{ $med->pivot->cantidad }})</li>
+                                                <li>{{ $med->nombre }} (Cant: {{ $med->pivot->cantidad }})</li>
                                             @endforeach
                                         </ul>
                                     @else

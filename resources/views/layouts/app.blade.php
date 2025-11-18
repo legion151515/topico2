@@ -251,6 +251,17 @@
             background: #f8f9fa;
         }
 
+        /* Wrapper para tablas responsivas */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 20px;
+        }
+
+        .table-responsive .table {
+            min-width: 600px;
+        }
+
         .alert {
             padding: 15px 20px;
             border-radius: 8px;

@@ -122,12 +122,13 @@
                 <tr>
                     <th style="width: 3%;">#</th>
                     <th style="width: 8%;">Fecha</th>
-                    <th style="width: 7%;">Hora</th>
-                    <th style="width: 10%;">Carrera</th>
-                    <th style="width: 6%;">Sem.</th>
-                    <th style="width: 6%;">Edad</th>
-                    <th style="width: 30%;">Motivo de Consulta</th>
-                    <th style="width: 30%;">Medicamentos</th>
+                    <th style="width: 6%;">Hora</th>
+                    <th style="width: 15%;">Nombre y Apellidos</th>
+                    <th style="width: 8%;">Carrera</th>
+                    <th style="width: 5%;">Sem.</th>
+                    <th style="width: 5%;">Edad</th>
+                    <th style="width: 25%;">Motivo de Consulta</th>
+                    <th style="width: 25%;">Medicamentos</th>
                 </tr>
             </thead>
             <tbody>
@@ -137,6 +138,13 @@
                         <td>{{ \Carbon\Carbon::parse($atencion->fecha)->format('d/m/Y') }}</td>
                         <td>{{ \Carbon\Carbon::parse($atencion->hora_entrada)->format('H:i') }}</td>
                         <td>
+                            @if($atencion->paciente)
+                                <strong>{{ $atencion->paciente->nombres }} {{ $atencion->paciente->apellido_paterno }} {{ $atencion->paciente->apellido_materno }}</strong>
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td>
                             @if($atencion->paciente && $atencion->paciente->carrera)
                                 <span class="badge badge-info">{{ $atencion->paciente->carrera->acronimo }}</span>
                             @elseif($atencion->paciente && $atencion->paciente->nivel)
@@ -145,10 +153,10 @@
                                 @elseif($atencion->paciente->nivel->otros_especificacion)
                                     <span class="badge badge-warning">Otros</span>
                                 @else
-                                    N/A
+                                    -
                                 @endif
                             @else
-                                N/A
+                                -
                             @endif
                         </td>
                         <td style="text-align: center;">
@@ -171,14 +179,14 @@
                             @elseif($atencion->motivo_otro)
                                 {{ $atencion->motivo_otro }}
                             @else
-                                N/A
+                                -
                             @endif
                         </td>
                         <td>
                             @if($atencion->medicamentos && $atencion->medicamentos->count() > 0)
                                 <ul class="medicamentos-list">
                                     @foreach($atencion->medicamentos as $med)
-                                        <li>{{ $med->nombre }} ({{ $med->pivot->cantidad }})</li>
+                                        <li>{{ $med->nombre }} (Cant: {{ $med->pivot->cantidad }})</li>
                                     @endforeach
                                 </ul>
                             @else
