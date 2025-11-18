@@ -15,7 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware('auth')->group(function () {
+// Rutas para ESTUDIANTES
+Route::middleware(['auth', 'estudiante'])->prefix('estudiante')->name('estudiante.')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\EstudianteDashboardController::class, 'index'])->name('dashboard');
+    // Aquí irán las rutas de citas médicas (próximamente)
+});
+
+// Rutas para PERSONAL DE SALUD (admin, medico, enfermero, recepcionista)
+Route::middleware(['auth', 'personal'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Rutas especiales ANTES de resource routes

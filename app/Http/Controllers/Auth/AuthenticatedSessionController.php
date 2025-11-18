@@ -28,6 +28,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // Redirigir según tipo de usuario
+        $user = Auth::user();
+
+        if ($user->tipo_usuario === 'estudiante') {
+            // Estudiantes van al portal de estudiantes
+            return redirect()->intended(route('estudiante.dashboard'));
+        }
+
+        // Personal de salud (admin, medico, enfermero, recepcionista) van al dashboard normal
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
