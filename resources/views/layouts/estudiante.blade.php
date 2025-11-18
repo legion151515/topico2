@@ -6,6 +6,7 @@
     <title>SIGRAB - Portal Estudiante</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,8 +15,8 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #F4F6F9 0%, #E8EDF2 100%);
             min-height: 100vh;
         }
 
@@ -25,9 +26,9 @@
             top: 0;
             width: 260px;
             height: 100vh;
-            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(180deg, #17A2B8 0%, #20C997 100%);
             overflow-y: auto;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
             z-index: 1000;
         }
 
@@ -157,8 +158,9 @@
             justify-content: space-between;
             align-items: center;
             padding: 25px 30px;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #17A2B8 0%, #20C997 100%);
             color: white;
+            border-radius: 16px 16px 0 0;
         }
 
         .card-header h3, .card-header h2 {
