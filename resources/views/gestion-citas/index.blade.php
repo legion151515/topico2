@@ -65,59 +65,61 @@
 
         <!-- Tabla de Citas -->
         @if($citas->count() > 0)
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Estudiante</th>
-                        <th>Motivo</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($citas as $cita)
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>{{ \Carbon\Carbon::parse($cita->fecha)->format('d/m/Y') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($cita->hora)->format('H:i') }}</td>
-                            <td>
-                                <strong>{{ $cita->estudiante->name }}</strong><br>
-                                <small>DNI: {{ $cita->estudiante->dni }}</small>
-                            </td>
-                            <td>{{ \Str::limit($cita->motivo, 40) }}</td>
-                            <td>
-                                @if($cita->estado === 'pendiente')
-                                    <span class="badge badge-warning">Pendiente</span>
-                                @elseif($cita->estado === 'aprobada')
-                                    <span class="badge badge-success">Aprobada</span>
-                                @elseif($cita->estado === 'rechazada')
-                                    <span class="badge badge-danger">Rechazada</span>
-                                @elseif($cita->estado === 'completada')
-                                    <span class="badge badge-info">Completada</span>
-                                @elseif($cita->estado === 'cancelada')
-                                    <span class="badge badge-secondary">Cancelada</span>
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('gestion-citas.show', $cita) }}" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i> Ver
-                                </a>
-
-                                @if($cita->estado === 'pendiente')
-                                    <form action="{{ route('gestion-citas.aprobar', $cita) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="btn btn-sm btn-success">
-                                            <i class="fas fa-check"></i> Aprobar
-                                        </button>
-                                    </form>
-                                @endif
-                            </td>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Estudiante</th>
+                            <th>Motivo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach($citas as $cita)
+                            <tr>
+                                <td>{{ \Carbon\Carbon::parse($cita->fecha)->format('d/m/Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($cita->hora)->format('H:i') }}</td>
+                                <td>
+                                    <strong>{{ $cita->estudiante->name }}</strong><br>
+                                    <small>DNI: {{ $cita->estudiante->dni }}</small>
+                                </td>
+                                <td>{{ \Str::limit($cita->motivo, 40) }}</td>
+                                <td>
+                                    @if($cita->estado === 'pendiente')
+                                        <span class="badge badge-warning">Pendiente</span>
+                                    @elseif($cita->estado === 'aprobada')
+                                        <span class="badge badge-success">Aprobada</span>
+                                    @elseif($cita->estado === 'rechazada')
+                                        <span class="badge badge-danger">Rechazada</span>
+                                    @elseif($cita->estado === 'completada')
+                                        <span class="badge badge-info">Completada</span>
+                                    @elseif($cita->estado === 'cancelada')
+                                        <span class="badge badge-secondary">Cancelada</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('gestion-citas.show', $cita) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i> Ver
+                                    </a>
+
+                                    @if($cita->estado === 'pendiente')
+                                        <form action="{{ route('gestion-citas.aprobar', $cita) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-sm btn-success">
+                                                <i class="fas fa-check"></i> Aprobar
+                                            </button>
+                                        </form>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
             {{ $citas->links() }}
         @else

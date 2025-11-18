@@ -15,7 +15,7 @@
 
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -61,7 +61,7 @@
         }
 
         .hero-section {
-            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            background: linear-gradient(135deg, #2c5f7a 0%, #1e3c72 100%);
             padding: 60px 40px;
             text-align: center;
             color: white;
@@ -129,12 +129,12 @@
         .feature-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            border-color: #2ecc71;
+            border-color: #1e3c72;
         }
 
         .feature-icon {
             font-size: 3rem;
-            color: #2ecc71;
+            color: #2c5f7a;
             margin-bottom: 20px;
         }
 
@@ -155,7 +155,7 @@
             text-align: center;
             margin-top: 50px;
             padding: 40px;
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             border-radius: 15px;
             color: white;
         }
@@ -176,7 +176,7 @@
         .btn-cta {
             padding: 15px 40px;
             background: white;
-            color: #3498db;
+            color: #1e3c72;
             text-decoration: none;
             border-radius: 30px;
             font-weight: 600;
@@ -198,7 +198,7 @@
 
         .btn-cta.secondary:hover {
             background: white;
-            color: #3498db;
+            color: #1e3c72;
         }
 
         .footer {
@@ -256,12 +256,6 @@
                     <a href="{{ route('login') }}" class="btn-nav">
                         <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                     </a>
-
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="btn-nav">
-                            <i class="fas fa-user-plus"></i> Registrarse como Estudiante
-                        </a>
-                    @endif
                 @endauth
             </div>
         @endif
@@ -374,11 +368,6 @@
                             <a href="{{ route('login') }}" class="btn-cta">
                                 <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                             </a>
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="btn-cta secondary">
-                                    <i class="fas fa-user-plus"></i> Crear Cuenta
-                                </a>
-                            @endif
                         @else
                             <a href="{{ url('/dashboard') }}" class="btn-cta">
                                 <i class="fas fa-tachometer-alt"></i> Ir al Dashboard

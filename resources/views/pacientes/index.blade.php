@@ -25,72 +25,74 @@
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>DNI</th>
-                    <th>Nombre Completo</th>
-                    <th>Edad</th>
-                    <th>Carrera/Área</th>
-                    <th>Atenciones</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($pacientes as $paciente)
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td><strong>{{ $paciente->dni }}</strong></td>
-                        <td>{{ $paciente->nombre }} {{ $paciente->apellido }}</td>
-                        <td>{{ $paciente->edad }} años</td>
-                        <td>
-                            @if($paciente->carrera)
-                                {{-- Tecnológico/Pedagógico: mostrar carrera --}}
-                                <span class="badge badge-info">{{ $paciente->carrera->acronimo }}</span>
-                                {{ $paciente->carrera->nombre }}
-                            @elseif($paciente->nivel)
-                                {{-- Escuela/Otros: mostrar desde nivel --}}
-                                @if($paciente->nivel->categoria === 'Escuela')
-                                    <span class="badge badge-success">{{ $paciente->nivel->nivel_escuela ?? 'ESCUELA' }}</span>
-                                    @if($paciente->nivel->grado)
-                                        {{ $paciente->nivel->grado }}° Grado
-                                    @elseif($paciente->nivel->anios)
-                                        {{ $paciente->nivel->anios }} años
-                                    @else
-                                        Escuela
+                        <th>DNI</th>
+                        <th>Nombre Completo</th>
+                        <th>Edad</th>
+                        <th>Carrera/Área</th>
+                        <th>Atenciones</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($pacientes as $paciente)
+                        <tr>
+                            <td><strong>{{ $paciente->dni }}</strong></td>
+                            <td>{{ $paciente->nombre }} {{ $paciente->apellido }}</td>
+                            <td>{{ $paciente->edad }} años</td>
+                            <td>
+                                @if($paciente->carrera)
+                                    {{-- Tecnológico/Pedagógico: mostrar carrera --}}
+                                    <span class="badge badge-info">{{ $paciente->carrera->acronimo }}</span>
+                                    {{ $paciente->carrera->nombre }}
+                                @elseif($paciente->nivel)
+                                    {{-- Escuela/Otros: mostrar desde nivel --}}
+                                    @if($paciente->nivel->categoria === 'Escuela')
+                                        <span class="badge badge-success">{{ $paciente->nivel->nivel_escuela ?? 'ESCUELA' }}</span>
+                                        @if($paciente->nivel->grado)
+                                            {{ $paciente->nivel->grado }}° Grado
+                                        @elseif($paciente->nivel->anios)
+                                            {{ $paciente->nivel->anios }} años
+                                        @else
+                                            Escuela
+                                        @endif
+                                    @elseif($paciente->nivel->categoria === 'Otros')
+                                        <span class="badge badge-warning">OTROS</span>
+                                        {{ $paciente->nivel->otros_especificacion ?? 'Otros' }}
                                     @endif
-                                @elseif($paciente->nivel->categoria === 'Otros')
-                                    <span class="badge badge-warning">OTROS</span>
-                                    {{ $paciente->nivel->otros_especificacion ?? 'Otros' }}
+                                @else
+                                    <span class="badge badge-secondary">-</span>
                                 @endif
-                            @else
-                                <span class="badge badge-secondary">-</span>
-                            @endif
-                        </td>
-                        <td>
-                            <span class="badge badge-primary">{{ $paciente->atenciones->count() }}</span>
-                        </td>
-                        <td>
-                            <a href="{{ route('pacientes.show', $paciente) }}" class="btn btn-sm btn-info">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                            <a href="{{ route('pacientes.edit', $paciente) }}" class="btn btn-sm btn-warning">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST" style="display:inline;">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de eliminar este paciente?')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="text-center">No hay pacientes registrados</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                            </td>
+                            <td>
+                                <span class="badge badge-primary">{{ $paciente->atenciones->count() }}</span>
+                            </td>
+                            <td>
+                                <a href="{{ route('pacientes.show', $paciente) }}" class="btn btn-sm btn-info">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ route('pacientes.edit', $paciente) }}" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST" style="display:inline;">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de eliminar este paciente?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center">No hay pacientes registrados</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
         <div class="mt-3">
             {{ $pacientes->links() }}
