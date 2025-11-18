@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Paciente;
 use App\Models\Carrera;
+use App\Models\Nivel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ImportarPacienteController extends Controller
 {
@@ -19,108 +20,122 @@ class ImportarPacienteController extends Controller
     }
 
     /**
-     * Procesar archivo de importación
+     * Procesar archivo Excel oficial del instituto
      */
     public function importar(Request $request)
     {
         $request->validate([
-            'archivo' => 'required|file|mimes:csv,txt|max:2048',
+            'archivo' => 'required|file|mimes:xlsx,xls|max:5120', // Máx 5MB
+            'categoria' => 'required|in:Tecnológico,Pedagógico',
+            'carrera_id' => 'required|exists:carreras,id',
+            'semestre' => 'required|string|max:10',
         ]);
 
         try {
             $archivo = $request->file('archivo');
-            $contenido = file_get_contents($archivo->getRealPath());
+            $categoria = $request->categoria;
+            $carreraId = $request->carrera_id;
+            $semestre = $request->semestre;
 
-            // Detectar y convertir a UTF-8 si es necesario
-            if (!mb_check_encoding($contenido, 'UTF-8')) {
-                $contenido = mb_convert_encoding($contenido, 'UTF-8', 'ISO-8859-1');
-            }
+            // Cargar el archivo Excel
+            $spreadsheet = IOFactory::load($archivo->getRealPath());
+            $worksheet = $spreadsheet->getActiveSheet();
+            $highestRow = $worksheet->getHighestRow();
 
-            $lineas = array_map('str_getcsv', explode("\n", $contenido));
-
-            // Remover encabezados
-            $encabezados = array_shift($lineas);
+            // Determinar desde qué fila empiezan los datos
+            // Pedagógico: fila 9 | Tecnológico: fila 10
+            $filaInicio = ($categoria === 'Pedagógico') ? 9 : 10;
 
             $importados = 0;
-            $errores = [];
             $duplicados = 0;
+            $errores = [];
 
             DB::beginTransaction();
 
-            foreach ($lineas as $index => $linea) {
-                // Saltar líneas vacías
-                if (empty($linea) || count($linea) < 5) {
-                    continue;
-                }
-
-                $numeroLinea = $index + 2; // +2 porque array inicia en 0 y hay encabezado
-
-                $datos = [
-                    'dni' => trim($linea[0] ?? ''),
-                    'nombre' => trim($linea[1] ?? ''),
-                    'apellido' => trim($linea[2] ?? ''),
-                    'edad' => trim($linea[3] ?? ''),
-                    'categoria' => trim($linea[4] ?? ''),
-                    'nombre_carrera' => trim($linea[5] ?? ''),
-                    'otros_especificacion' => trim($linea[6] ?? ''),
-                ];
-
-                // Validar datos
-                $validator = Validator::make($datos, [
-                    'dni' => 'required|digits:8',
-                    'nombre' => 'required|string|max:255',
-                    'apellido' => 'required|string|max:255',
-                    'edad' => 'required|integer|min:1|max:120',
-                    'categoria' => 'required|in:Secundaria,Tecnológico,Técnico,Universitario,Personal,Otros',
-                ]);
-
-                if ($validator->fails()) {
-                    $errores[] = "Línea {$numeroLinea}: " . implode(', ', $validator->errors()->all());
-                    continue;
-                }
-
-                // Verificar si el paciente ya existe
-                $pacienteExistente = Paciente::where('dni', $datos['dni'])->first();
-                if ($pacienteExistente) {
-                    $duplicados++;
-                    continue;
-                }
-
-                // Buscar o crear carrera
-                $carrera_id = null;
-                if (!empty($datos['nombre_carrera']) && $datos['categoria'] !== 'Otros') {
-                    $carrera = Carrera::where('nombre', $datos['nombre_carrera'])
-                                      ->where('categoria', $datos['categoria'])
-                                      ->first();
-
-                    if (!$carrera) {
-                        $carrera = Carrera::create([
-                            'nombre' => $datos['nombre_carrera'],
-                            'categoria' => $datos['categoria'],
-                        ]);
+            // Procesar cada fila de estudiantes
+            for ($fila = $filaInicio; $fila <= $highestRow; $fila++) {
+                try {
+                    // Extraer DNI de las columnas B hasta I (índices 1-8)
+                    $dni = '';
+                    for ($col = 1; $col <= 8; $col++) {
+                        $celda = $worksheet->getCellByColumnAndRow($col, $fila);
+                        $valor = trim($celda->getValue() ?? '');
+                        $dni .= $valor;
                     }
 
-                    $carrera_id = $carrera->id;
+                    // Validar que el DNI tenga 8 dígitos
+                    if (strlen($dni) != 8 || !ctype_digit($dni)) {
+                        // Saltar filas vacías o inválidas
+                        if (!empty($dni)) {
+                            $errores[] = "Fila {$fila}: DNI inválido ({$dni})";
+                        }
+                        continue;
+                    }
+
+                    // Extraer Apellidos y Nombres de la columna J (índice 9)
+                    $apellidosNombres = trim($worksheet->getCellByColumnAndRow(9, $fila)->getValue() ?? '');
+
+                    if (empty($apellidosNombres)) {
+                        continue; // Saltar si no hay nombre
+                    }
+
+                    // Separar apellidos y nombres
+                    // Formato: "APELLIDO1 APELLIDO2, Nombre1 Nombre2"
+                    $partes = explode(',', $apellidosNombres, 2);
+                    $apellido = trim($partes[0] ?? '');
+                    $nombre = trim($partes[1] ?? '');
+
+                    // Si no hay coma, intentar dividir por espacios (tomar primeros 2 como apellidos)
+                    if (empty($nombre)) {
+                        $palabras = explode(' ', $apellidosNombres);
+                        if (count($palabras) >= 3) {
+                            $apellido = implode(' ', array_slice($palabras, 0, 2));
+                            $nombre = implode(' ', array_slice($palabras, 2));
+                        } else {
+                            $apellido = $palabras[0] ?? '';
+                            $nombre = $palabras[1] ?? '';
+                        }
+                    }
+
+                    // Verificar si el paciente ya existe
+                    $pacienteExistente = Paciente::where('dni', $dni)->first();
+                    if ($pacienteExistente) {
+                        $duplicados++;
+                        continue;
+                    }
+
+                    // Crear paciente
+                    $paciente = Paciente::create([
+                        'dni' => $dni,
+                        'nombre' => $nombre,
+                        'apellido' => $apellido,
+                        'edad' => 18, // Edad por defecto
+                        'carrera_id' => $carreraId,
+                    ]);
+
+                    // Crear registro en tabla niveles
+                    Nivel::create([
+                        'paciente_id' => $paciente->id,
+                        'categoria' => $categoria,
+                        'semestre' => $semestre,
+                        'nivel_escuela' => null,
+                        'grado' => null,
+                        'anios' => null,
+                        'otros_especificacion' => null,
+                    ]);
+
+                    $importados++;
+
+                } catch (\Exception $e) {
+                    $errores[] = "Fila {$fila}: Error al procesar - " . $e->getMessage();
                 }
-
-                // Crear paciente
-                Paciente::create([
-                    'dni' => $datos['dni'],
-                    'nombre' => $datos['nombre'],
-                    'apellido' => $datos['apellido'],
-                    'edad' => $datos['edad'],
-                    'carrera_id' => $carrera_id,
-                    'otros_especificacion' => $datos['otros_especificacion'],
-                ]);
-
-                $importados++;
             }
 
             DB::commit();
 
-            $mensaje = "✅ Importación completada: {$importados} paciente(s) importado(s).";
+            $mensaje = "✅ Importación completada: {$importados} estudiante(s) importado(s).";
             if ($duplicados > 0) {
-                $mensaje .= " {$duplicados} paciente(s) omitido(s) por DNI duplicado.";
+                $mensaje .= " {$duplicados} estudiante(s) omitido(s) por DNI duplicado.";
             }
             if (count($errores) > 0) {
                 $mensaje .= " " . count($errores) . " error(es) encontrado(s).";
@@ -133,29 +148,16 @@ class ImportarPacienteController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('pacientes.importar')
-                           ->with('error', 'Error al procesar el archivo: ' . $e->getMessage());
+                           ->with('error', 'Error al procesar el archivo Excel: ' . $e->getMessage());
         }
     }
 
     /**
-     * Descargar plantilla de ejemplo
+     * Descargar plantilla de ejemplo (YA NO SE USA)
      */
     public function descargarPlantilla()
     {
-        $contenido = "DNI,Nombre,Apellido,Edad,Categoría,Nombre de Carrera/Programa,Otros (Especificar)\n";
-        $contenido .= "12345678,Juan,Pérez García,18,Secundaria,5to Año Secundaria,\n";
-        $contenido .= "87654321,María,López Ruiz,20,Tecnológico,Computación e Informática,\n";
-        $contenido .= "11223344,Pedro,Quispe Mamani,19,Técnico,Enfermería Técnica,\n";
-        $contenido .= "44332211,Ana,Huamán Flores,22,Universitario,Administración de Empresas,\n";
-        $contenido .= "55667788,Carlos,Torres Mendoza,35,Personal,Personal Administrativo,\n";
-        $contenido .= "99887766,Luis,Vargas Díaz,25,Otros,,Visitante\n";
-
-        $nombreArchivo = 'plantilla_importacion_pacientes_' . date('Y-m-d') . '.csv';
-
-        return response($contenido, 200, [
-            'Content-Type' => 'text/csv; charset=UTF-8',
-            'Content-Disposition' => 'attachment; filename="' . $nombreArchivo . '"',
-            'Content-Length' => strlen($contenido),
-        ]);
+        return redirect()->route('pacientes.importar')
+                       ->with('error', 'Ya no es necesario descargar plantilla. Usa el archivo Excel oficial del instituto.');
     }
 }

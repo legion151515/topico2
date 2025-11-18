@@ -5,15 +5,10 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3><i class="fas fa-file-import"></i> Importar Pacientes desde Excel/CSV</h3>
-        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <a href="{{ route('pacientes.index') }}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Volver
-            </a>
-            <a href="{{ route('pacientes.plantilla') }}" class="btn btn-success">
-                <i class="fas fa-download"></i> Descargar Plantilla
-            </a>
-        </div>
+        <h3><i class="fas fa-file-import"></i> Importar Estudiantes desde Excel Oficial</h3>
+        <a href="{{ route('pacientes.index') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
     </div>
 
     <div class="card-body">
@@ -52,94 +47,60 @@
             <h4 class="alert-heading"><i class="fas fa-info-circle"></i> Instrucciones para Importar</h4>
             <hr>
             <ol style="margin-bottom: 0;">
-                <li><strong>Descarga la plantilla</strong> haciendo clic en el botón "Descargar Plantilla"</li>
-                <li><strong>Abre el archivo</strong> con Microsoft Excel, Google Sheets o LibreOffice Calc</li>
-                <li><strong>Completa los datos</strong> de los pacientes siguiendo el formato de ejemplo</li>
-                <li><strong>Guarda el archivo</strong> en formato CSV (separado por comas)</li>
-                <li><strong>Sube el archivo</strong> usando el formulario de abajo</li>
+                <li><strong>Selecciona la categoría</strong> (Tecnológico o Pedagógico)</li>
+                <li><strong>Selecciona la carrera/programa</strong> correspondiente</li>
+                <li><strong>Selecciona el semestre</strong></li>
+                <li><strong>Sube el archivo Excel oficial</strong> que recibes del instituto (Lista Oficial 2025-I)</li>
+                <li>El sistema procesará automáticamente el Excel y extraerá los estudiantes</li>
             </ol>
         </div>
 
-        {{-- Información de los campos --}}
-        <div class="card mb-4" style="background: #f8f9fa;">
-            <div class="card-body">
-                <h5><i class="fas fa-table"></i> Formato del Archivo CSV</h5>
-                <p>El archivo debe contener las siguientes columnas en este orden:</p>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-sm">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>Columna</th>
-                                <th>Descripción</th>
-                                <th>Ejemplo</th>
-                                <th>Obligatorio</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>DNI</strong></td>
-                                <td>Documento Nacional de Identidad (8 dígitos)</td>
-                                <td>12345678</td>
-                                <td><span class="badge badge-danger">Sí</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Nombre</strong></td>
-                                <td>Nombre(s) del paciente</td>
-                                <td>Juan Carlos</td>
-                                <td><span class="badge badge-danger">Sí</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Apellido</strong></td>
-                                <td>Apellido(s) del paciente</td>
-                                <td>Pérez García</td>
-                                <td><span class="badge badge-danger">Sí</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Edad</strong></td>
-                                <td>Edad del paciente (número entero)</td>
-                                <td>18</td>
-                                <td><span class="badge badge-danger">Sí</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Categoría</strong></td>
-                                <td>
-                                    Debe ser uno de: <br>
-                                    <code>Secundaria</code>, <code>Tecnológico</code>, <code>Técnico</code>,
-                                    <code>Universitario</code>, <code>Personal</code>, <code>Otros</code>
-                                </td>
-                                <td>Secundaria</td>
-                                <td><span class="badge badge-danger">Sí</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Nombre de Carrera/Programa</strong></td>
-                                <td>Nombre del programa o carrera (dejar vacío si es "Otros")</td>
-                                <td>5to Año Secundaria<br>Computación e Informática</td>
-                                <td><span class="badge badge-warning">No</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Otros (Especificar)</strong></td>
-                                <td>Especificación adicional si categoría es "Otros"</td>
-                                <td>Visitante<br>Padre de familia</td>
-                                <td><span class="badge badge-warning">No</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        {{-- Formulario de carga --}}
+        {{-- Formulario de importación --}}
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="fas fa-upload"></i> Subir Archivo CSV</h5>
+                <h5 class="mb-0"><i class="fas fa-upload"></i> Importar Lista de Estudiantes</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('pacientes.importar.procesar') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('pacientes.importar.procesar') }}" method="POST" enctype="multipart/form-data" id="form-importar">
                     @csrf
+
+                    <div class="row">
+                        {{-- Categoría --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="categoria"><i class="fas fa-tag"></i> Categoría *</label>
+                                <select id="categoria" name="categoria" class="form-control" required onchange="cargarCarreras()">
+                                    <option value="">-- Selecciona una categoría --</option>
+                                    <option value="Tecnológico">Tecnológico</option>
+                                    <option value="Pedagógico">Pedagógico</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {{-- Carrera --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="carrera_id"><i class="fas fa-graduation-cap"></i> Carrera/Programa *</label>
+                                <select id="carrera_id" name="carrera_id" class="form-control" required disabled>
+                                    <option value="">-- Primero selecciona una categoría --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {{-- Semestre --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="semestre"><i class="fas fa-book"></i> Semestre *</label>
+                                <select id="semestre" name="semestre" class="form-control" required disabled>
+                                    <option value="">-- Primero selecciona una categoría --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label for="archivo">
-                            <i class="fas fa-file-csv"></i> Selecciona el archivo CSV:
+                            <i class="fas fa-file-excel"></i> Archivo Excel Oficial (.xlsx):
                         </label>
                         <div class="custom-file">
                             <input
@@ -147,7 +108,7 @@
                                 class="custom-file-input @error('archivo') is-invalid @enderror"
                                 id="archivo"
                                 name="archivo"
-                                accept=".csv,.txt"
+                                accept=".xlsx,.xls"
                                 required
                                 onchange="updateFileName(this)"
                             >
@@ -160,7 +121,7 @@
                         </div>
                         <small class="form-text text-muted">
                             <i class="fas fa-info-circle"></i>
-                            Archivos permitidos: .csv, .txt | Tamaño máximo: 2 MB
+                            Sube el archivo Excel oficial (Lista Oficial 2025-I) que recibes del instituto | Tamaño máximo: 5 MB
                         </small>
                     </div>
 
@@ -168,31 +129,32 @@
                         <i class="fas fa-exclamation-triangle"></i>
                         <strong>Importante:</strong>
                         <ul style="margin-bottom: 0; margin-top: 10px;">
-                            <li>Los pacientes con DNI duplicado serán omitidos automáticamente</li>
-                            <li>Las carreras/programas nuevos se crearán automáticamente</li>
-                            <li>Verifica que los datos sean correctos antes de importar</li>
+                            <li>Sube el archivo Excel <strong>SIN MODIFICAR</strong> tal como lo recibes del instituto</li>
+                            <li>Los estudiantes con DNI duplicado serán omitidos automáticamente</li>
+                            <li>El sistema detectará automáticamente si es Pedagógico o Tecnológico desde el archivo</li>
+                            <li>Los nombres se procesarán automáticamente (apellidos y nombres separados)</li>
                         </ul>
                     </div>
 
                     <div class="form-group text-center" style="margin-top: 25px;">
                         <button type="submit" class="btn btn-primary btn-lg">
-                            <i class="fas fa-file-import"></i> Importar Pacientes
+                            <i class="fas fa-file-import"></i> Importar Estudiantes
                         </button>
                     </div>
                 </form>
             </div>
         </div>
 
-        {{-- Tips adicionales --}}
+        {{-- Información adicional --}}
         <div class="card mt-4" style="border-left: 4px solid #17a2b8;">
             <div class="card-body">
-                <h5><i class="fas fa-lightbulb"></i> Consejos</h5>
+                <h5><i class="fas fa-lightbulb"></i> Notas Importantes</h5>
                 <ul style="margin-bottom: 0;">
-                    <li>Asegúrate de que el archivo esté guardado con codificación UTF-8 para evitar problemas con caracteres especiales (tildes, ñ, etc.)</li>
-                    <li>No modifiques los encabezados de la plantilla (primera fila)</li>
-                    <li>Puedes importar desde 1 hasta cientos de pacientes en un solo archivo</li>
-                    <li>Si tienes errores, revisa el mensaje de error para identificar qué líneas tienen problemas</li>
-                    <li>En Excel, usa "Guardar como" → "CSV (delimitado por comas)"</li>
+                    <li>El sistema lee automáticamente el formato de "Lista Oficial 2025-I" del instituto</li>
+                    <li>No es necesario modificar ni convertir el archivo Excel</li>
+                    <li>El DNI se extraerá automáticamente de las 8 columnas separadas</li>
+                    <li>Los nombres y apellidos se separarán automáticamente</li>
+                    <li>La edad se calculará por defecto como 18 años (puede editarse después)</li>
                 </ul>
             </div>
         </div>
@@ -205,6 +167,63 @@ function updateFileName(input) {
     const fileName = input.files[0]?.name || 'Elegir archivo...';
     label.textContent = fileName;
 }
+
+// Configuración de semestres
+const configuracion = {
+    'Tecnológico': {
+        semestres: ['I', 'II', 'III', 'IV', 'V', 'VI']
+    },
+    'Pedagógico': {
+        semestres: ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
+    }
+};
+
+function cargarCarreras() {
+    const categoria = document.getElementById('categoria').value;
+    const carreraSelect = document.getElementById('carrera_id');
+    const semestreSelect = document.getElementById('semestre');
+
+    if (!categoria) {
+        carreraSelect.innerHTML = '<option value="">-- Primero selecciona una categoría --</option>';
+        carreraSelect.disabled = true;
+        semestreSelect.innerHTML = '<option value="">-- Primero selecciona una categoría --</option>';
+        semestreSelect.disabled = true;
+        return;
+    }
+
+    // Cargar carreras desde el servidor
+    carreraSelect.innerHTML = '<option value="">-- Cargando --</option>';
+    carreraSelect.disabled = false;
+
+    fetch(`/carreras/categoria/${categoria}`)
+        .then(response => response.json())
+        .then(data => {
+            carreraSelect.innerHTML = '<option value="">-- Selecciona una carrera --</option>';
+            data.forEach(carrera => {
+                const option = document.createElement('option');
+                option.value = carrera.id;
+                option.textContent = carrera.nombre;
+                carreraSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error al cargar carreras:', error);
+            carreraSelect.innerHTML = '<option value="">Error al cargar carreras</option>';
+        });
+
+    // Cargar semestres
+    semestreSelect.innerHTML = '<option value="">-- Selecciona un semestre --</option>';
+    semestreSelect.disabled = false;
+
+    if (configuracion[categoria]) {
+        configuracion[categoria].semestres.forEach(sem => {
+            const option = document.createElement('option');
+            option.value = sem;
+            option.textContent = sem;
+            semestreSelect.appendChild(option);
+        });
+    }
+}
 </script>
 
 <style>
@@ -214,18 +233,6 @@ function updateFileName(input) {
 
 .custom-file-label::after {
     content: "Buscar";
-}
-
-.table-sm th, .table-sm td {
-    padding: 8px;
-    vertical-align: middle;
-}
-
-code {
-    background-color: #f8f9fa;
-    padding: 2px 6px;
-    border-radius: 3px;
-    color: #e83e8c;
 }
 </style>
 @endsection
