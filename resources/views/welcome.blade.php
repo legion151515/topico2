@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGRAM - Sistema de Gestión de Atenciones Médicas</title>
+    <title>SIGRAB - Sistema de Gestión de Atenciones Médicas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -274,7 +274,7 @@
                     <div class="logo-icon">
                         <i class="fas fa-heartbeat"></i>
                     </div>
-                    <h1>SIGRAM</h1>
+                    <h1>SIGRAB</h1>
                     <p class="subtitle">Sistema de Gestión y Registro de Atenciones Médicas</p>
                     <p class="institution-name">
                         <i class="fas fa-hospital"></i> Tópico de Enfermería - La Salle Urubamba
@@ -390,7 +390,7 @@
 
             <!-- Footer -->
             <div class="footer">
-                <p><strong>SIGRAM</strong> - Sistema de Gestión y Registro de Atenciones Médicas</p>
+                <p><strong>SIGRAB</strong> - Sistema de Gestión y Registro de Atenciones Médicas</p>
                 <p style="margin-top: 10px; font-size: 0.9rem;">
                     <i class="fas fa-graduation-cap"></i> La Salle Urubamba
                 </p>

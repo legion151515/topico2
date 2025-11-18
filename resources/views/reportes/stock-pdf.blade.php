@@ -91,7 +91,7 @@
 <body>
     <div class="header">
         <h1>REPORTE DE MEDICAMENTOS CON STOCK BAJO</h1>
-        <p>Sistema de Gestión y Registro de Atenciones Médicas - SIGRAM</p>
+        <p>Sistema de Gestión y Registro de Atenciones Médicas - SIGRAB</p>
         <p>La Salle Urubamba</p>
         <p><strong>Fecha de generación:</strong> {{ date('d/m/Y H:i:s') }}</p>
     </div>
@@ -189,7 +189,7 @@
     @endif
 
     <div class="footer">
-        <p>Este reporte fue generado automáticamente por el Sistema SIGRAM</p>
+        <p>Este reporte fue generado automáticamente por el Sistema SIGRAB</p>
         <p>© {{ date('Y') }} La Salle Urubamba - Tópico Médico</p>
     </div>
 </body>
