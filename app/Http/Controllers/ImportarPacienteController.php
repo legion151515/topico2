@@ -153,11 +153,34 @@ class ImportarPacienteController extends Controller
     }
 
     /**
-     * Descargar plantilla de ejemplo (YA NO SE USA)
+     * Descargar plantilla de ejemplo en formato Excel
      */
     public function descargarPlantilla()
     {
-        return redirect()->route('pacientes.importar')
-                       ->with('error', 'Ya no es necesario descargar plantilla. Usa el archivo Excel oficial del instituto.');
+        $contenido = "INSTRUCCIONES PARA IMPORTAR ESTUDIANTES\n\n";
+        $contenido .= "PASO 1: Selecciona la categoría (Tecnológico o Pedagógico)\n";
+        $contenido .= "PASO 2: Selecciona la carrera correspondiente\n";
+        $contenido .= "PASO 3: Selecciona el semestre\n";
+        $contenido .= "PASO 4: Sube el archivo Excel oficial del instituto (Lista Oficial 2025-I)\n\n";
+        $contenido .= "IMPORTANTE:\n";
+        $contenido .= "- Sube el archivo Excel SIN MODIFICAR tal como lo recibes del instituto\n";
+        $contenido .= "- El sistema leerá automáticamente:\n";
+        $contenido .= "  * DNI de las columnas B hasta I (8 dígitos)\n";
+        $contenido .= "  * Apellidos y Nombres de la columna J\n";
+        $contenido .= "  * Iniciará desde la fila 9 (Pedagógico) o fila 10 (Tecnológico)\n\n";
+        $contenido .= "FORMATO ESPERADO DEL EXCEL:\n";
+        $contenido .= "Columnas B-I: Cada dígito del DNI en una celda separada\n";
+        $contenido .= "Columna J: APELLIDOS, Nombres\n\n";
+        $contenido .= "EJEMPLO DE FILA EN EL EXCEL:\n";
+        $contenido .= "| A | B | C | D | E | F | G | H | I | J                              |\n";
+        $contenido .= "| 1 | 7 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | HUAMAN LOPEZ, Maria Elena      |\n";
+
+        $nombreArchivo = 'INSTRUCCIONES_Importar_Estudiantes.txt';
+
+        return response($contenido, 200, [
+            'Content-Type' => 'text/plain; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $nombreArchivo . '"',
+            'Content-Length' => strlen($contenido),
+        ]);
     }
 }

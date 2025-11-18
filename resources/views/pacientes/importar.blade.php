@@ -6,9 +6,14 @@
 <div class="card">
     <div class="card-header">
         <h3><i class="fas fa-file-import"></i> Importar Estudiantes desde Excel Oficial</h3>
-        <a href="{{ route('pacientes.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Volver
-        </a>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="{{ route('pacientes.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+            <a href="{{ route('pacientes.plantilla') }}" class="btn btn-success">
+                <i class="fas fa-download"></i> Descargar Instrucciones
+            </a>
+        </div>
     </div>
 
     <div class="card-body">
