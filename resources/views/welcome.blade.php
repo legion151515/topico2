@@ -256,6 +256,12 @@
                     <a href="{{ route('login') }}" class="btn-nav">
                         <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                     </a>
+
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="btn-nav">
+                            <i class="fas fa-user-plus"></i> Registrarse como Estudiante
+                        </a>
+                    @endif
                 @endauth
             </div>
         @endif
@@ -364,15 +370,21 @@
                         Accede al sistema y gestiona las atenciones médicas de forma eficiente
                     </p>
                     <div class="cta-buttons">
-                        @guest
-                            <a href="{{ route('login') }}" class="btn-cta">
-                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
-                            </a>
-                        @else
+                        @auth
                             <a href="{{ url('/dashboard') }}" class="btn-cta">
                                 <i class="fas fa-tachometer-alt"></i> Ir al Dashboard
                             </a>
-                        @endguest
+                        @else
+                            <a href="{{ route('login') }}" class="btn-cta">
+                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                            </a>
+
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="btn-cta secondary">
+                                    <i class="fas fa-user-plus"></i> Registrarse como Estudiante
+                                </a>
+                            @endif
+                        @endauth
                     </div>
                 </div>
             </div>
