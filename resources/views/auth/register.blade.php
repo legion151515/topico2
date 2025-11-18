@@ -301,6 +301,32 @@
                         @enderror
                     </div>
 
+                    <!-- DNI -->
+                    <div class="form-group">
+                        <label for="dni" class="form-label">
+                            <i class="fas fa-id-card"></i> DNI
+                        </label>
+                        <input
+                            id="dni"
+                            class="form-control @error('dni') is-invalid @enderror"
+                            type="text"
+                            name="dni"
+                            value="{{ old('dni') }}"
+                            required
+                            maxlength="8"
+                            pattern="[0-9]{8}"
+                            placeholder="12345678"
+                        />
+                        @error('dni')
+                            <span class="input-error">
+                                <i class="fas fa-exclamation-circle"></i> {{ $message }}
+                            </span>
+                        @enderror
+                        <small class="form-text text-muted" style="display: block; margin-top: 5px; color: rgba(255, 255, 255, 0.7);">
+                            Ingresa tu DNI de 8 dígitos
+                        </small>
+                    </div>
+
                     <!-- Password -->
                     <div class="form-group">
                         <label for="password" class="form-label">

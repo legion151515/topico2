@@ -32,12 +32,15 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'dni' => ['required', 'digits:8', 'unique:users,dni'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'dni' => $request->dni,
+            'tipo_usuario' => 'estudiante', // Todos los registros públicos son estudiantes
             'password' => Hash::make($request->password),
         ]);
 
@@ -45,6 +48,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Redirigir a portal de estudiante
+        return redirect()->route('estudiante.dashboard');
     }
 }

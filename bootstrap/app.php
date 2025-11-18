@@ -11,7 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Registrar middlewares personalizados
+        $middleware->alias([
+            'personal' => \App\Http\Middleware\PersonalMiddleware::class,
+            'estudiante' => \App\Http\Middleware\EstudianteMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

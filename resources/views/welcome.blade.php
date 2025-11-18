@@ -259,7 +259,7 @@
 
                     @if (Route::has('register'))
                         <a href="{{ route('register') }}" class="btn-nav">
-                            <i class="fas fa-user-plus"></i> Registrarse
+                            <i class="fas fa-user-plus"></i> Registrarse como Estudiante
                         </a>
                     @endif
                 @endauth
