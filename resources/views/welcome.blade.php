@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGRAB - Sistema de Gestión de Atenciones Médicas</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>SIGRAB - Sistema de Gestión y Registro de Atenciones - Bienestar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,390 +13,348 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #F4F6F9 0%, #E8EDF2 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
         }
 
         .container {
-            max-width: 1200px;
             width: 100%;
-        }
-
-        .header-nav {
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .btn-nav {
-            padding: 10px 25px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-nav:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            max-width: 1200px;
+            padding: 20px;
         }
 
         .welcome-card {
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
             overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 600px;
         }
 
-        .hero-section {
-            background: linear-gradient(135deg, #2c5f7a 0%, #1e3c72 100%);
-            padding: 60px 40px;
-            text-align: center;
+        .left-section {
+            background: linear-gradient(135deg, #1D70B8 0%, #0D6EFD 100%);
+            padding: 60px 50px;
             color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .logo-container {
-            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
         }
 
         .logo-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        .hero-section h1 {
-            font-size: 2.5rem;
+        .logo-text h1 {
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 5px;
         }
 
-        .hero-section .subtitle {
-            font-size: 1.2rem;
-            font-weight: 300;
-            margin-bottom: 10px;
-        }
-
-        .institution-name {
-            font-size: 1.1rem;
-            font-weight: 400;
+        .logo-text p {
+            font-size: 12px;
             opacity: 0.9;
-            margin-top: 10px;
+            font-weight: 300;
         }
 
-        .content-section {
-            padding: 50px 40px;
+        .welcome-text h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
+        .welcome-text p {
+            font-size: 16px;
+            line-height: 1.6;
+            opacity: 0.95;
+            margin-bottom: 15px;
+        }
+
+        .features {
             margin-top: 40px;
         }
 
-        .feature-card {
-            text-align: center;
-            padding: 30px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            border-color: #1e3c72;
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
         }
 
         .feature-icon {
-            font-size: 3rem;
-            color: #2c5f7a;
-            margin-bottom: 20px;
+            width: 40px;
+            height: 40px;
+            background: #17A2B8;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
         }
 
-        .feature-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #2c3e50;
+        .feature-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .right-section {
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .auth-header h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #343A40;
             margin-bottom: 10px;
         }
 
-        .feature-description {
-            color: #7f8c8d;
-            line-height: 1.6;
-            font-size: 0.95rem;
+        .auth-header p {
+            font-size: 14px;
+            color: #6C757D;
         }
 
-        .cta-section {
-            text-align: center;
-            margin-top: 50px;
-            padding: 40px;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            border-radius: 15px;
-            color: white;
-        }
-
-        .cta-section h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .cta-buttons {
+        .auth-buttons {
             display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 30px;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .btn-cta {
-            padding: 15px 40px;
-            background: white;
-            color: #1e3c72;
-            text-decoration: none;
-            border-radius: 30px;
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
             font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-cta:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn-cta.secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-cta.secondary:hover {
-            background: white;
-            color: #1e3c72;
-        }
-
-        .footer {
+            text-decoration: none;
             text-align: center;
-            padding: 30px;
-            background: #34495e;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #1D70B8;
             color: white;
+            box-shadow: 0 4px 15px rgba(29, 112, 184, 0.3);
         }
 
-        .footer p {
-            margin: 5px 0;
+        .btn-primary:hover {
+            background: #0D6EFD;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
         }
 
-        @media (max-width: 768px) {
-            .hero-section h1 {
-                font-size: 1.8rem;
-            }
+        .btn-secondary {
+            background: white;
+            color: #1D70B8;
+            border: 2px solid #1D70B8;
+        }
 
-            .hero-section .subtitle {
-                font-size: 1rem;
-            }
+        .btn-secondary:hover {
+            background: #F4F6F9;
+            border-color: #0D6EFD;
+            color: #0D6EFD;
+            transform: translateY(-2px);
+        }
 
-            .logo-icon {
-                font-size: 60px;
-            }
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
 
-            .content-section {
-                padding: 30px 20px;
-            }
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #E8EDF2;
+        }
 
-            .features-grid {
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            color: #6C757D;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .info-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #F4F6F9;
+            border-left: 4px solid #17A2B8;
+            border-radius: 8px;
+        }
+
+        .info-box h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #343A40;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box p {
+            font-size: 13px;
+            color: #6C757D;
+            line-height: 1.5;
+        }
+
+        .footer-info {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #6C757D;
+        }
+
+        @media (max-width: 968px) {
+            .welcome-card {
                 grid-template-columns: 1fr;
             }
 
-            .cta-section h2 {
-                font-size: 1.5rem;
+            .left-section {
+                padding: 40px 30px;
             }
 
-            .cta-buttons {
-                flex-direction: column;
+            .right-section {
+                padding: 40px 30px;
+            }
+
+            .welcome-text h2 {
+                font-size: 28px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Navigation -->
-        @if (Route::has('login'))
-            <div class="header-nav">
-                @auth
-                    <a href="{{ url('/dashboard') }}" class="btn-nav">
-                        <i class="fas fa-home"></i> Dashboard
-                    </a>
-                @else
-                    <a href="{{ route('login') }}" class="btn-nav">
-                        <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
-                    </a>
-
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="btn-nav">
-                            <i class="fas fa-user-plus"></i> Registrarse como Estudiante
-                        </a>
-                    @endif
-                @endauth
-            </div>
-        @endif
-
-        <!-- Main Welcome Card -->
         <div class="welcome-card">
-            <!-- Hero Section -->
-            <div class="hero-section">
+            <!-- Sección Izquierda - Información -->
+            <div class="left-section">
                 <div class="logo-container">
-                    <div class="logo-icon">
-                        <i class="fas fa-heartbeat"></i>
-                    </div>
-                    <h1>SIGRAB</h1>
-                    <p class="subtitle">Sistema de Gestión y Registro de Atenciones Médicas</p>
-                    <p class="institution-name">
-                        <i class="fas fa-hospital"></i> Tópico de Enfermería - La Salle Urubamba
-                    </p>
-                </div>
-            </div>
-
-            <!-- Content Section -->
-            <div class="content-section">
-                <div style="text-align: center; margin-bottom: 40px;">
-                    <h2 style="color: #2c3e50; font-size: 2rem; margin-bottom: 15px;">
-                        Gestión Integral de Salud Estudiantil
-                    </h2>
-                    <p style="color: #7f8c8d; font-size: 1.1rem; max-width: 800px; margin: 0 auto;">
-                        Plataforma completa para el registro, seguimiento y análisis de atenciones médicas
-                        en nuestro tópico institucional. Control eficiente de pacientes, medicamentos y reportes estadísticos.
-                    </p>
-                </div>
-
-                <!-- Features Grid -->
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-user-injured"></i>
-                        </div>
-                        <h3 class="feature-title">Gestión de Pacientes</h3>
-                        <p class="feature-description">
-                            Registro completo de estudiantes y personal con historial médico detallado,
-                            búsqueda rápida por DNI y seguimiento de atenciones.
-                        </p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-notes-medical"></i>
-                        </div>
-                        <h3 class="feature-title">Atenciones Médicas</h3>
-                        <p class="feature-description">
-                            Registro de consultas con motivos predefinidos, medicamentos administrados,
-                            tiempos de atención y observaciones detalladas.
-                        </p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-pills"></i>
-                        </div>
-                        <h3 class="feature-title">Control de Medicamentos</h3>
-                        <p class="feature-description">
-                            Inventario completo de medicamentos, alertas de stock bajo,
-                            control de vencimientos y registro de consumo.
-                        </p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-file-medical-alt"></i>
-                        </div>
-                        <h3 class="feature-title">Historial Clínico</h3>
-                        <p class="feature-description">
-                            Acceso completo al historial de cada paciente con generación de
-                            reportes en PDF para seguimiento y referencia.
-                        </p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h3 class="feature-title">Reportes Estadísticos</h3>
-                        <p class="feature-description">
-                            Análisis de atenciones por área, enfermedades más comunes,
-                            con exportación a PDF para toma de decisiones.
-                        </p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <h3 class="feature-title">Diseño Responsive</h3>
-                        <p class="feature-description">
-                            Acceso desde cualquier dispositivo: computadora, tablet o móvil.
-                            Interfaz adaptable y fácil de usar en todas las plataformas.
-                        </p>
+                    <div class="logo-icon">🏥</div>
+                    <div class="logo-text">
+                        <h1>SIGRAB</h1>
+                        <p>Instituto "La Salle" Urubamba</p>
                     </div>
                 </div>
 
-                <!-- CTA Section -->
-                <div class="cta-section">
-                    <h2>¿Listo para comenzar?</h2>
-                    <p style="font-size: 1.1rem; margin-bottom: 10px;">
-                        Accede al sistema y gestiona las atenciones médicas de forma eficiente
-                    </p>
-                    <div class="cta-buttons">
-                        @auth
-                            <a href="{{ url('/dashboard') }}" class="btn-cta">
-                                <i class="fas fa-tachometer-alt"></i> Ir al Dashboard
-                            </a>
-                        @else
-                            <a href="{{ route('login') }}" class="btn-cta">
-                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
-                            </a>
+                <div class="welcome-text">
+                    <h2>Sistema de Gestión y Registro de Atenciones - Bienestar</h2>
+                    <p>Plataforma integral para el manejo eficiente de historias clínicas, citas médicas y atención de pacientes.</p>
+                    <p>Diseñado especialmente para el Tópico de Salud de nuestro instituto.</p>
+                </div>
 
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="btn-cta secondary">
-                                    <i class="fas fa-user-plus"></i> Registrarse como Estudiante
-                                </a>
-                            @endif
-                        @endauth
+                <div class="features">
+                    <div class="feature-item">
+                        <div class="feature-icon">📋</div>
+                        <div class="feature-text">Gestión completa de historias clínicas</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📅</div>
+                        <div class="feature-text">Control de citas y atenciones médicas</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💊</div>
+                        <div class="feature-text">Inventario automático de medicamentos</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-text">Reportes y estadísticas en tiempo real</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Footer -->
-            <div class="footer">
-                <p><strong>SIGRAB</strong> - Sistema de Gestión y Registro de Atenciones Médicas</p>
-                <p style="margin-top: 10px; font-size: 0.9rem;">
-                    <i class="fas fa-graduation-cap"></i> La Salle Urubamba
-                </p>
-                <p style="font-size: 0.85rem; opacity: 0.8; margin-top: 5px;">
-                    © {{ date('Y') }} Todos los derechos reservados
-                </p>
+            <!-- Sección Derecha - Autenticación -->
+            <div class="right-section">
+                <div class="auth-header">
+                    @auth
+                        <h3>¡Bienvenido de vuelta!</h3>
+                        <p>Ya tienes una sesión activa</p>
+                    @else
+                        <h3>Bienvenido de vuelta</h3>
+                        <p>Accede a tu cuenta para continuar</p>
+                    @endauth
+                </div>
+
+                <div class="auth-buttons">
+                    @auth
+                        <a href="{{ url('/dashboard') }}" class="btn btn-primary">
+                            <span>📊</span>
+                            Ir al Dashboard
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn-primary">
+                            <span>🔐</span>
+                            Iniciar Sesión
+                        </a>
+
+                        @if (Route::has('register'))
+                            <div class="divider">
+                                <span>o</span>
+                            </div>
+
+                            <a href="{{ route('register') }}" class="btn btn-secondary">
+                                <span>✨</span>
+                                Registrarse como Estudiante
+                            </a>
+                        @endif
+                    @endauth
+                </div>
+
+                <div class="info-box">
+                    <h4>
+                        <span>ℹ️</span>
+                        Acceso Autorizado
+                    </h4>
+                    <p>Este sistema es de uso exclusivo para el personal autorizado del Tópico de Salud y estudiantes registrados. Para solicitar acceso, contacta con el administrador del sistema.</p>
+                </div>
+
+                <div class="footer-info">
+                    <p>© {{ date('Y') }} SIGRAB - Instituto "La Salle" Urubamba</p>
+                    <p style="margin-top: 5px;">Sistema de Gestión y Registro de Atenciones</p>
+                </div>
             </div>
         </div>
     </div>
