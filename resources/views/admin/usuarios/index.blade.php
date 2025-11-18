@@ -29,22 +29,22 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Email</th>
-                            <th>DNI</th>
-                            <th>Tipo</th>
-                            <th>Fecha Creación</th>
-                            <th>Acciones</th>
+                            <th><i class="fas fa-hashtag"></i> ID</th>
+                            <th><i class="fas fa-user"></i> Nombre</th>
+                            <th><i class="fas fa-envelope"></i> Email</th>
+                            <th><i class="fas fa-id-card"></i> DNI</th>
+                            <th><i class="fas fa-user-tag"></i> Tipo</th>
+                            <th><i class="fas fa-calendar-plus"></i> Fecha Creación</th>
+                            <th><i class="fas fa-cog"></i> Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($usuarios as $usuario)
                             <tr>
-                                <td>{{ $usuario->id }}</td>
+                                <td><strong>{{ $usuario->id }}</strong></td>
                                 <td>{{ $usuario->name }}</td>
                                 <td>{{ $usuario->email }}</td>
                                 <td>{{ $usuario->dni }}</td>

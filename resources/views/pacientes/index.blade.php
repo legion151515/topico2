@@ -26,15 +26,15 @@
         @endif
 
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table">
                 <thead>
                     <tr>
-                        <th>DNI</th>
-                        <th>Nombre Completo</th>
-                        <th>Edad</th>
-                        <th>Carrera/Área</th>
-                        <th>Atenciones</th>
-                        <th>Acciones</th>
+                        <th><i class="fas fa-id-card"></i> DNI</th>
+                        <th><i class="fas fa-user"></i> Nombre Completo</th>
+                        <th><i class="fas fa-birthday-cake"></i> Edad</th>
+                        <th><i class="fas fa-graduation-cap"></i> Carrera/Área</th>
+                        <th><i class="fas fa-notes-medical"></i> Atenciones</th>
+                        <th><i class="fas fa-cog"></i> Acciones</th>
                     </tr>
                 </thead>
                 <tbody>

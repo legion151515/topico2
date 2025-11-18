@@ -11,11 +11,13 @@
         </a>
     </div>
     <div class="card-body">
-        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-            <h4 style="margin: 0 0 10px 0; color: #1976d2;"><i class="fas fa-info-circle"></i> Información Importante</h4>
-            <ul style="margin: 0; padding-left: 20px;">
-                <li><strong>Horario de atención:</strong> Lunes a Sábado de 8:00 AM a 1:00 PM</li>
-                <li><strong>Domingos:</strong> No hay atención</li>
+        <div style="background: linear-gradient(135deg, rgba(23, 162, 184, 0.08) 0%, rgba(32, 201, 151, 0.08) 100%); padding: 25px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid #17A2B8;">
+            <h4 style="margin: 0 0 15px 0; color: #17A2B8; font-weight: 600;">
+                <i class="fas fa-info-circle"></i> Información Importante
+            </h4>
+            <ul style="margin: 0; padding-left: 20px; line-height: 2; color: #495057;">
+                <li><strong style="color: #17A2B8;">Horario de atención:</strong> Lunes a Sábado de 8:00 AM a 1:00 PM</li>
+                <li><strong style="color: #17A2B8;">Domingos:</strong> No hay atención</li>
                 <li>Tu cita debe ser <strong>confirmada</strong> por el personal médico</li>
                 <li>Recibirás una notificación cuando tu cita sea aprobada o rechazada</li>
                 <li>Puedes cancelar tu cita en cualquier momento</li>

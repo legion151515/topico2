@@ -22,24 +22,24 @@
 
         @if($atenciones->count())
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table">
                     <thead>
                         <tr>
-                            <th>Fecha</th>
-                            <th>Paciente</th>
-                            <th>Acrónimo</th>
-                            <th>DNI</th>
-                            <th>Motivo</th>
-                            <th>Hora Entrada</th>
-                            <th>Hora Salida</th>
-                            <th>Medicamentos</th>
-                            <th>Acciones</th>
+                            <th><i class="fas fa-calendar"></i> Fecha</th>
+                            <th><i class="fas fa-user"></i> Paciente</th>
+                            <th><i class="fas fa-tag"></i> Acrónimo</th>
+                            <th><i class="fas fa-id-card"></i> DNI</th>
+                            <th><i class="fas fa-notes-medical"></i> Motivo</th>
+                            <th><i class="fas fa-sign-in-alt"></i> Entrada</th>
+                            <th><i class="fas fa-sign-out-alt"></i> Salida</th>
+                            <th><i class="fas fa-pills"></i> Medicamentos</th>
+                            <th><i class="fas fa-cog"></i> Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($atenciones as $atencion)
                             <tr>
-                                <td>{{ $atencion->fecha ? \Carbon\Carbon::parse($atencion->fecha)->format('d/m/Y') : $atencion->created_at->format('d/m/Y') }}</td>
+                                <td><strong>{{ $atencion->fecha ? \Carbon\Carbon::parse($atencion->fecha)->format('d/m/Y') : $atencion->created_at->format('d/m/Y') }}</strong></td>
                                 <td>
                                     @if($atencion->paciente)
                                         {{ $atencion->paciente->nombre }} {{ $atencion->paciente->apellido }}

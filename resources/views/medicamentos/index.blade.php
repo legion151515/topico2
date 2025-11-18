@@ -21,25 +21,26 @@
         @endif
 
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Stock Actual</th>
-                        <th>Stock Mínimo</th>
-                        <th>Fecha Vencimiento</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th><i class="fas fa-pills"></i> Nombre</th>
+                        <th><i class="fas fa-file-alt"></i> Descripción</th>
+                        <th><i class="fas fa-boxes"></i> Stock Actual</th>
+                        <th><i class="fas fa-exclamation-triangle"></i> Stock Mínimo</th>
+                        <th><i class="fas fa-calendar-times"></i> Fecha Vencimiento</th>
+                        <th><i class="fas fa-info-circle"></i> Estado</th>
+                        <th><i class="fas fa-cog"></i> Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($medicamentos as $medicamento)
-                        <tr class="{{ $medicamento->cantidad_stock < $medicamento->stock_minimo_alerta ? 'table-warning' : '' }}">
+                        <tr style="{{ $medicamento->cantidad_stock < $medicamento->stock_minimo_alerta ? 'background-color: #FFF3CD;' : '' }}">
                             <td><strong>{{ $medicamento->nombre }}</strong></td>
                             <td>{{ $medicamento->descripcion ?? 'N/A' }}</td>
                             <td>
                                 <span class="badge badge-{{ $medicamento->cantidad_stock < $medicamento->stock_minimo_alerta ? 'danger' : 'success' }}">
+                                    <i class="fas fa-{{ $medicamento->cantidad_stock < $medicamento->stock_minimo_alerta ? 'exclamation-circle' : 'check' }}"></i>
                                     {{ $medicamento->cantidad_stock }}
                                 </span>
                             </td>

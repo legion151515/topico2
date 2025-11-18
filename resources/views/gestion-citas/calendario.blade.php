@@ -53,33 +53,33 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Hora</th>
-                                    <th>Estudiante</th>
-                                    <th>Motivo</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
+                                    <th><i class="fas fa-clock"></i> Hora</th>
+                                    <th><i class="fas fa-user-graduate"></i> Estudiante</th>
+                                    <th><i class="fas fa-notes-medical"></i> Motivo</th>
+                                    <th><i class="fas fa-info-circle"></i> Estado</th>
+                                    <th><i class="fas fa-cog"></i> Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($citasDia->sortBy('hora') as $cita)
                                     <tr>
-                                        <td><strong>{{ \Carbon\Carbon::parse($cita->hora)->format('H:i') }}</strong></td>
+                                        <td><span class="badge badge-secondary" style="font-size: 14px;">{{ \Carbon\Carbon::parse($cita->hora)->format('H:i') }}</span></td>
                                         <td>
-                                            {{ $cita->estudiante->name }}<br>
-                                            <small>DNI: {{ $cita->estudiante->dni }}</small>
+                                            <strong>{{ $cita->estudiante->name }}</strong><br>
+                                            <small style="color: #6C757D;"><i class="fas fa-id-card"></i> DNI: {{ $cita->estudiante->dni }}</small>
                                         </td>
                                         <td>{{ \Str::limit($cita->motivo, 40) }}</td>
                                         <td>
                                             @if($cita->estado === 'pendiente')
-                                                <span class="badge badge-warning">Pendiente</span>
+                                                <span class="badge badge-warning"><i class="fas fa-clock"></i> Pendiente</span>
                                             @elseif($cita->estado === 'aprobada')
-                                                <span class="badge badge-success">Aprobada</span>
+                                                <span class="badge badge-success"><i class="fas fa-check"></i> Aprobada</span>
                                             @elseif($cita->estado === 'rechazada')
-                                                <span class="badge badge-danger">Rechazada</span>
+                                                <span class="badge badge-danger"><i class="fas fa-times"></i> Rechazada</span>
                                             @elseif($cita->estado === 'completada')
-                                                <span class="badge badge-info">Completada</span>
+                                                <span class="badge badge-info"><i class="fas fa-check-double"></i> Completada</span>
                                             @elseif($cita->estado === 'cancelada')
-                                                <span class="badge badge-secondary">Cancelada</span>
+                                                <span class="badge badge-secondary"><i class="fas fa-ban"></i> Cancelada</span>
                                             @endif
                                         </td>
                                         <td>

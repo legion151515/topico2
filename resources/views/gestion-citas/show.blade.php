@@ -26,34 +26,34 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
             <!-- Información de la Cita -->
             <div>
-                <h4 style="color: #1e3c72; margin-bottom: 20px;"><i class="fas fa-calendar-alt"></i> Información de la Cita</h4>
+                <h4 style="color: #1D70B8; margin-bottom: 20px; font-weight: 600;"><i class="fas fa-calendar-alt"></i> Información de la Cita</h4>
                 <table class="table">
                     <tr>
-                        <th>Fecha:</th>
-                        <td>{{ \Carbon\Carbon::parse($cita->fecha)->format('d/m/Y') }}</td>
+                        <th style="width: 35%;"><i class="fas fa-calendar"></i> Fecha:</th>
+                        <td><strong>{{ \Carbon\Carbon::parse($cita->fecha)->format('d/m/Y') }}</strong></td>
                     </tr>
                     <tr>
-                        <th>Hora:</th>
-                        <td>{{ \Carbon\Carbon::parse($cita->hora)->format('H:i A') }}</td>
+                        <th><i class="fas fa-clock"></i> Hora:</th>
+                        <td><span class="badge badge-secondary">{{ \Carbon\Carbon::parse($cita->hora)->format('H:i') }}</span></td>
                     </tr>
                     <tr>
-                        <th>Estado:</th>
+                        <th><i class="fas fa-info-circle"></i> Estado:</th>
                         <td>
                             @if($cita->estado === 'pendiente')
-                                <span class="badge badge-warning">Pendiente</span>
+                                <span class="badge badge-warning"><i class="fas fa-clock"></i> Pendiente</span>
                             @elseif($cita->estado === 'aprobada')
-                                <span class="badge badge-success">Aprobada</span>
+                                <span class="badge badge-success"><i class="fas fa-check"></i> Aprobada</span>
                             @elseif($cita->estado === 'rechazada')
-                                <span class="badge badge-danger">Rechazada</span>
+                                <span class="badge badge-danger"><i class="fas fa-times"></i> Rechazada</span>
                             @elseif($cita->estado === 'completada')
-                                <span class="badge badge-info">Completada</span>
+                                <span class="badge badge-info"><i class="fas fa-check-double"></i> Completada</span>
                             @elseif($cita->estado === 'cancelada')
-                                <span class="badge badge-secondary">Cancelada</span>
+                                <span class="badge badge-secondary"><i class="fas fa-ban"></i> Cancelada</span>
                             @endif
                         </td>
                     </tr>
                     <tr>
-                        <th>Creada:</th>
+                        <th><i class="fas fa-plus-circle"></i> Creada:</th>
                         <td>{{ $cita->created_at->format('d/m/Y H:i') }}</td>
                     </tr>
                 </table>
@@ -61,18 +61,18 @@
 
             <!-- Información del Estudiante -->
             <div>
-                <h4 style="color: #1e3c72; margin-bottom: 20px;"><i class="fas fa-user-graduate"></i> Información del Estudiante</h4>
+                <h4 style="color: #1D70B8; margin-bottom: 20px; font-weight: 600;"><i class="fas fa-user-graduate"></i> Información del Estudiante</h4>
                 <table class="table">
                     <tr>
-                        <th>Nombre:</th>
-                        <td>{{ $cita->estudiante->name }}</td>
+                        <th style="width: 35%;"><i class="fas fa-user"></i> Nombre:</th>
+                        <td><strong>{{ $cita->estudiante->name }}</strong></td>
                     </tr>
                     <tr>
-                        <th>DNI:</th>
+                        <th><i class="fas fa-id-card"></i> DNI:</th>
                         <td>{{ $cita->estudiante->dni }}</td>
                     </tr>
                     <tr>
-                        <th>Email:</th>
+                        <th><i class="fas fa-envelope"></i> Email:</th>
                         <td>{{ $cita->estudiante->email }}</td>
                     </tr>
                 </table>
@@ -83,8 +83,8 @@
 
         <!-- Motivo de la Consulta -->
         <div style="margin-bottom: 20px;">
-            <h4 style="color: #1e3c72; margin-bottom: 15px;"><i class="fas fa-stethoscope"></i> Motivo de la Consulta</h4>
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #3498db;">
+            <h4 style="color: #1D70B8; margin-bottom: 15px; font-weight: 600;"><i class="fas fa-stethoscope"></i> Motivo de la Consulta</h4>
+            <div style="background: linear-gradient(135deg, rgba(29, 112, 184, 0.05) 0%, rgba(13, 110, 253, 0.05) 100%); padding: 20px; border-radius: 12px; border-left: 4px solid #1D70B8;">
                 {{ $cita->motivo }}
             </div>
         </div>
@@ -92,8 +92,8 @@
         <!-- Observaciones del Estudiante -->
         @if($cita->observaciones_estudiante)
             <div style="margin-bottom: 20px;">
-                <h4 style="color: #1e3c72; margin-bottom: 15px;"><i class="fas fa-comment"></i> Observaciones del Estudiante</h4>
-                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #f39c12;">
+                <h4 style="color: #1D70B8; margin-bottom: 15px; font-weight: 600;"><i class="fas fa-comment"></i> Observaciones del Estudiante</h4>
+                <div style="background: linear-gradient(135deg, rgba(243, 156, 18, 0.08) 0%, rgba(230, 126, 34, 0.08) 100%); padding: 20px; border-radius: 12px; border-left: 4px solid #F39C12;">
                     {{ $cita->observaciones_estudiante }}
                 </div>
             </div>
@@ -102,8 +102,8 @@
         <!-- Observaciones del Personal -->
         @if($cita->observaciones_personal)
             <div style="margin-bottom: 20px;">
-                <h4 style="color: #1e3c72; margin-bottom: 15px;"><i class="fas fa-user-md"></i> Observaciones del Personal</h4>
-                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                <h4 style="color: #1D70B8; margin-bottom: 15px; font-weight: 600;"><i class="fas fa-user-md"></i> Observaciones del Personal</h4>
+                <div style="background: linear-gradient(135deg, rgba(231, 76, 60, 0.08) 0%, rgba(192, 57, 43, 0.08) 100%); padding: 20px; border-radius: 12px; border-left: 4px solid #E74C3C;">
                     {{ $cita->observaciones_personal }}
                 </div>
             </div>
@@ -112,9 +112,9 @@
         <!-- Atendido por -->
         @if($cita->personalAtendio)
             <div style="margin-bottom: 20px;">
-                <h4 style="color: #1e3c72; margin-bottom: 15px;"><i class="fas fa-user-check"></i> Atendido Por</h4>
-                <div style="background: #e8f5e9; padding: 15px; border-radius: 8px;">
-                    <strong>{{ $cita->personalAtendio->name }}</strong> ({{ ucfirst($cita->personalAtendio->tipo_usuario) }})
+                <h4 style="color: #1D70B8; margin-bottom: 15px; font-weight: 600;"><i class="fas fa-user-check"></i> Atendido Por</h4>
+                <div style="background: linear-gradient(135deg, rgba(32, 201, 151, 0.1) 0%, rgba(23, 162, 184, 0.1) 100%); padding: 20px; border-radius: 12px; border-left: 4px solid #20C997;">
+                    <strong>{{ $cita->personalAtendio->name }}</strong> <span style="color: #6C757D;">({{ ucfirst($cita->personalAtendio->tipo_usuario) }})</span>
                 </div>
             </div>
         @endif
