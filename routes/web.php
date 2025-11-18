@@ -55,6 +55,18 @@ Route::middleware(['auth', 'personal'])->group(function () {
     Route::get('/reportes/stock', [ReporteController::class, 'stock'])->name('reportes.stock');
     Route::get('/reportes/stock/pdf', [ReporteController::class, 'stockPDF'])->name('reportes.stock.pdf');
 
+    // Reportes Mensuales
+    Route::get('/reportes/mensual', [ReporteController::class, 'mensual'])->name('reportes.mensual');
+    Route::get('/reportes/mensual/reporte', [ReporteController::class, 'mensualReporte'])->name('reportes.mensual.reporte');
+    Route::get('/reportes/mensual/pdf', [ReporteController::class, 'mensualPDF'])->name('reportes.mensual.pdf');
+    Route::get('/reportes/mensual/excel', [ReporteController::class, 'mensualExcel'])->name('reportes.mensual.excel');
+
+    // Reportes Anuales
+    Route::get('/reportes/anual', [ReporteController::class, 'anual'])->name('reportes.anual');
+    Route::get('/reportes/anual/reporte', [ReporteController::class, 'anualReporte'])->name('reportes.anual.reporte');
+    Route::get('/reportes/anual/pdf', [ReporteController::class, 'anualPDF'])->name('reportes.anual.pdf');
+    Route::get('/reportes/anual/excel', [ReporteController::class, 'anualExcel'])->name('reportes.anual.excel');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

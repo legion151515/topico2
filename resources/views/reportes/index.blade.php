@@ -30,5 +30,23 @@
             Ver Reporte
         </a>
     </div>
+
+    <div class="card" style="text-align: center; padding: 30px;">
+        <i class="fas fa-calendar-alt" style="font-size: 40px; color: #3498db; margin-bottom: 15px;"></i>
+        <h3 style="color: #1e3c72; margin: 15px 0;">Reporte Mensual</h3>
+        <p>Atenciones detalladas por mes (PDF y Excel)</p>
+        <a href="{{ route('reportes.mensual') }}" class="btn btn-primary" style="margin-top: 15px;">
+            Generar Reporte
+        </a>
+    </div>
+
+    <div class="card" style="text-align: center; padding: 30px;">
+        <i class="fas fa-calendar" style="font-size: 40px; color: #2ecc71; margin-bottom: 15px;"></i>
+        <h3 style="color: #1e3c72; margin: 15px 0;">Reporte Anual</h3>
+        <p>Atenciones detalladas por año (PDF y Excel)</p>
+        <a href="{{ route('reportes.anual') }}" class="btn btn-primary" style="margin-top: 15px;">
+            Generar Reporte
+        </a>
+    </div>
 </div>
 @endsection

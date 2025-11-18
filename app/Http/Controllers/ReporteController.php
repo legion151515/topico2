@@ -104,4 +104,210 @@ class ReporteController extends Controller
         $pdf = Pdf::loadView('reportes.stock-pdf', compact('medicamentos'));
         return $pdf->download('Reporte_Stock_Bajo_' . date('Y-m-d') . '.pdf');
     }
+
+    // =====================================================
+    // REPORTES MENSUALES
+    // =====================================================
+
+    /**
+     * Mostrar formulario de selección de mes y año
+     */
+    public function mensual()
+    {
+        return view('reportes.mensual');
+    }
+
+    /**
+     * Generar reporte mensual HTML
+     */
+    public function mensualReporte(Request $request)
+    {
+        $request->validate([
+            'mes' => 'required|integer|min:1|max:12',
+            'anio' => 'required|integer|min:2020|max:2100',
+        ]);
+
+        $mes = $request->mes;
+        $anio = $request->anio;
+
+        // Obtener todas las atenciones del mes seleccionado
+        $atenciones = Atencion::with([
+            'paciente.carrera',
+            'paciente.nivel',
+            'motivo',
+            'medicamentos'
+        ])
+        ->whereYear('fecha_atencion', $anio)
+        ->whereMonth('fecha_atencion', $mes)
+        ->orderBy('fecha_atencion', 'asc')
+        ->orderBy('hora_entrada', 'asc')
+        ->get();
+
+        $nombreMes = $this->obtenerNombreMes($mes);
+
+        return view('reportes.mensual-resultado', compact('atenciones', 'mes', 'anio', 'nombreMes'));
+    }
+
+    /**
+     * Generar reporte mensual en PDF
+     */
+    public function mensualPDF(Request $request)
+    {
+        $request->validate([
+            'mes' => 'required|integer|min:1|max:12',
+            'anio' => 'required|integer|min:2020|max:2100',
+        ]);
+
+        $mes = $request->mes;
+        $anio = $request->anio;
+
+        $atenciones = Atencion::with([
+            'paciente.carrera',
+            'paciente.nivel',
+            'motivo',
+            'medicamentos'
+        ])
+        ->whereYear('fecha_atencion', $anio)
+        ->whereMonth('fecha_atencion', $mes)
+        ->orderBy('fecha_atencion', 'asc')
+        ->orderBy('hora_entrada', 'asc')
+        ->get();
+
+        $nombreMes = $this->obtenerNombreMes($mes);
+
+        $pdf = Pdf::loadView('reportes.mensual-pdf', compact('atenciones', 'mes', 'anio', 'nombreMes'))
+                  ->setPaper('a4', 'landscape');
+
+        return $pdf->download('Reporte_Mensual_' . $nombreMes . '_' . $anio . '.pdf');
+    }
+
+    /**
+     * Generar reporte mensual en Excel
+     */
+    public function mensualExcel(Request $request)
+    {
+        $request->validate([
+            'mes' => 'required|integer|min:1|max:12',
+            'anio' => 'required|integer|min:2020|max:2100',
+        ]);
+
+        $mes = $request->mes;
+        $anio = $request->anio;
+        $nombreMes = $this->obtenerNombreMes($mes);
+
+        return \Excel::download(
+            new \App\Exports\ReporteMensualExport($mes, $anio),
+            'Reporte_Mensual_' . $nombreMes . '_' . $anio . '.xlsx'
+        );
+    }
+
+    // =====================================================
+    // REPORTES ANUALES
+    // =====================================================
+
+    /**
+     * Mostrar formulario de selección de año
+     */
+    public function anual()
+    {
+        return view('reportes.anual');
+    }
+
+    /**
+     * Generar reporte anual HTML
+     */
+    public function anualReporte(Request $request)
+    {
+        $request->validate([
+            'anio' => 'required|integer|min:2020|max:2100',
+        ]);
+
+        $anio = $request->anio;
+
+        // Obtener todas las atenciones del año seleccionado
+        $atenciones = Atencion::with([
+            'paciente.carrera',
+            'paciente.nivel',
+            'motivo',
+            'medicamentos'
+        ])
+        ->whereYear('fecha_atencion', $anio)
+        ->orderBy('fecha_atencion', 'asc')
+        ->orderBy('hora_entrada', 'asc')
+        ->get();
+
+        return view('reportes.anual-resultado', compact('atenciones', 'anio'));
+    }
+
+    /**
+     * Generar reporte anual en PDF
+     */
+    public function anualPDF(Request $request)
+    {
+        $request->validate([
+            'anio' => 'required|integer|min:2020|max:2100',
+        ]);
+
+        $anio = $request->anio;
+
+        $atenciones = Atencion::with([
+            'paciente.carrera',
+            'paciente.nivel',
+            'motivo',
+            'medicamentos'
+        ])
+        ->whereYear('fecha_atencion', $anio)
+        ->orderBy('fecha_atencion', 'asc')
+        ->orderBy('hora_entrada', 'asc')
+        ->get();
+
+        $pdf = Pdf::loadView('reportes.anual-pdf', compact('atenciones', 'anio'))
+                  ->setPaper('a4', 'landscape');
+
+        return $pdf->download('Reporte_Anual_' . $anio . '.pdf');
+    }
+
+    /**
+     * Generar reporte anual en Excel
+     */
+    public function anualExcel(Request $request)
+    {
+        $request->validate([
+            'anio' => 'required|integer|min:2020|max:2100',
+        ]);
+
+        $anio = $request->anio;
+
+        return \Excel::download(
+            new \App\Exports\ReporteAnualExport($anio),
+            'Reporte_Anual_' . $anio . '.xlsx'
+        );
+    }
+
+    // =====================================================
+    // MÉTODOS AUXILIARES
+    // =====================================================
+
+    /**
+     * Obtener nombre del mes en español
+     */
+    private function obtenerNombreMes($numeroMes)
+    {
+        $meses = [
+            1 => 'Enero',
+            2 => 'Febrero',
+            3 => 'Marzo',
+            4 => 'Abril',
+            5 => 'Mayo',
+            6 => 'Junio',
+            7 => 'Julio',
+            8 => 'Agosto',
+            9 => 'Septiembre',
+            10 => 'Octubre',
+            11 => 'Noviembre',
+            12 => 'Diciembre',
+        ];
+
+        return $meses[$numeroMes] ?? 'Desconocido';
+    }
 }
