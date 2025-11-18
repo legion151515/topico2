@@ -9,6 +9,8 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\HistorialController;
 use App\Http\Controllers\ImportarPacienteController;
 use App\Http\Controllers\AdminUsuariosController;
+use App\Http\Controllers\CitasController;
+use App\Http\Controllers\GestionCitasController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarreraController;
 
@@ -19,7 +21,12 @@ Route::get('/', function () {
 // Rutas para ESTUDIANTES
 Route::middleware(['auth', 'estudiante'])->prefix('estudiante')->name('estudiante.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\EstudianteDashboardController::class, 'index'])->name('dashboard');
-    // Aquí irán las rutas de citas médicas (próximamente)
+
+    // Citas Médicas
+    Route::get('/citas', [CitasController::class, 'index'])->name('citas.index');
+    Route::get('/citas/crear', [CitasController::class, 'create'])->name('citas.create');
+    Route::post('/citas', [CitasController::class, 'store'])->name('citas.store');
+    Route::patch('/citas/{cita}/cancelar', [CitasController::class, 'cancelar'])->name('citas.cancelar');
 });
 
 // Rutas para PERSONAL DE SALUD (admin, medico, enfermero, recepcionista)
@@ -77,6 +84,15 @@ Route::middleware(['auth', 'personal'])->group(function () {
         'update' => 'admin.usuarios.update',
         'destroy' => 'admin.usuarios.destroy',
     ]);
+
+    // Gestión de Citas (personal médico)
+    Route::get('/gestion-citas', [GestionCitasController::class, 'index'])->name('gestion-citas.index');
+    Route::get('/gestion-citas/calendario', [GestionCitasController::class, 'calendario'])->name('gestion-citas.calendario');
+    Route::get('/gestion-citas/{cita}', [GestionCitasController::class, 'show'])->name('gestion-citas.show');
+    Route::patch('/gestion-citas/{cita}/aprobar', [GestionCitasController::class, 'aprobar'])->name('gestion-citas.aprobar');
+    Route::patch('/gestion-citas/{cita}/rechazar', [GestionCitasController::class, 'rechazar'])->name('gestion-citas.rechazar');
+    Route::patch('/gestion-citas/{cita}/completar', [GestionCitasController::class, 'completar'])->name('gestion-citas.completar');
+    Route::patch('/gestion-citas/{cita}/cancelar', [GestionCitasController::class, 'cancelar'])->name('gestion-citas.cancelar');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

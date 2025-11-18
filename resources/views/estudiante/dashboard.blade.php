@@ -114,24 +114,27 @@
         </div>
 
         <div class="welcome-box">
-            <p><strong>🎉 ¡Registro exitoso!</strong></p>
+            <p><strong>🎉 ¡Bienvenido!</strong></p>
             <p>
-                Tu cuenta de estudiante ha sido creada correctamente.
-                Próximamente podrás:
+                Tu cuenta de estudiante está lista. Ahora puedes:
             </p>
             <ul style="text-align: left; padding-left: 40px; color: #555; line-height: 2;">
-                <li>📅 Agendar citas médicas online</li>
-                <li>👀 Ver tus citas programadas</li>
-                <li>📋 Consultar tu historial clínico</li>
-                <li>🔔 Recibir notificaciones de tus citas</li>
+                <li>✅ Agendar citas médicas online</li>
+                <li>✅ Ver tus citas programadas</li>
+                <li>✅ Recibir confirmación del personal médico</li>
+                <li>✅ Cancelar citas cuando lo necesites</li>
             </ul>
-            <p style="margin-top: 20px; color: #e74c3c;">
-                <i class="fas fa-tools"></i> <strong>Sistema en desarrollo</strong><br>
-                Esta funcionalidad estará disponible próximamente.
+            <p style="margin-top: 20px; color: #2ecc71;">
+                <i class="fas fa-calendar-check"></i> <strong>Sistema de Citas Disponible</strong><br>
+                ¡Agenda tu cita médica ahora!
             </p>
         </div>
 
-        <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+        <a href="{{ route('estudiante.citas.index') }}" class="btn">
+            <i class="fas fa-calendar-check"></i> Mis Citas Médicas
+        </a>
+
+        <form method="POST" action="{{ route('logout') }}" style="display: inline; margin-left: 10px;">
             @csrf
             <button type="submit" class="btn btn-danger">
                 <i class="fas fa-sign-out-alt"></i> Cerrar Sesión

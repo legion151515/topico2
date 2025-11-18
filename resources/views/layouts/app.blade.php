@@ -684,6 +684,11 @@
                     <i class="fas fa-chart-bar"></i> Reportes
                 </a>
             </li>
+            <li>
+                <a href="{{ route('gestion-citas.index') }}" class="{{ request()->routeIs('gestion-citas.*') ? 'active' : '' }}">
+                    <i class="fas fa-calendar-check"></i> Gestión de Citas
+                </a>
+            </li>
             @if(auth()->user()->tipo_usuario === 'admin')
             <li>
                 <a href="{{ route('admin.usuarios.index') }}" class="{{ request()->routeIs('admin.usuarios.*') ? 'active' : '' }}">
