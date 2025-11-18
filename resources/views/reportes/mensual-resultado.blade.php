@@ -56,7 +56,7 @@
                                 <td>{{ \Carbon\Carbon::parse($atencion->hora_entrada)->format('H:i') }}</td>
                                 <td>
                                     @if($atencion->paciente)
-                                        <strong>{{ $atencion->paciente->nombres }} {{ $atencion->paciente->apellido_paterno }} {{ $atencion->paciente->apellido_materno }}</strong>
+                                        <strong>{{ $atencion->paciente->nombre }} {{ $atencion->paciente->apellido }}</strong>
                                     @else
                                         <span class="text-muted">Sin datos</span>
                                     @endif
@@ -77,15 +77,15 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if($atencion->paciente && $atencion->paciente->semestre)
-                                        {{ $atencion->paciente->semestre }}°
+                                    @if($atencion->semestre)
+                                        {{ $atencion->semestre }}°
                                     @else
                                         -
                                     @endif
                                 </td>
                                 <td>
-                                    @if($atencion->paciente && $atencion->paciente->fecha_nacimiento)
-                                        {{ \Carbon\Carbon::parse($atencion->paciente->fecha_nacimiento)->age }} años
+                                    @if($atencion->paciente && $atencion->paciente->edad)
+                                        {{ $atencion->paciente->edad }} años
                                     @else
                                         -
                                     @endif
