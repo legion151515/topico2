@@ -8,6 +8,7 @@ use App\Http\Controllers\MotivoConsultaController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\HistorialController;
 use App\Http\Controllers\ImportarPacienteController;
+use App\Http\Controllers\AdminUsuariosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarreraController;
 
@@ -66,6 +67,16 @@ Route::middleware(['auth', 'personal'])->group(function () {
     Route::get('/reportes/anual/reporte', [ReporteController::class, 'anualReporte'])->name('reportes.anual.reporte');
     Route::get('/reportes/anual/pdf', [ReporteController::class, 'anualPDF'])->name('reportes.anual.pdf');
     Route::get('/reportes/anual/excel', [ReporteController::class, 'anualExcel'])->name('reportes.anual.excel');
+
+    // Gestión de Usuarios (solo accesible por el personal, se valida dentro del controlador que sea admin)
+    Route::resource('admin/usuarios', AdminUsuariosController::class)->names([
+        'index' => 'admin.usuarios.index',
+        'create' => 'admin.usuarios.create',
+        'store' => 'admin.usuarios.store',
+        'edit' => 'admin.usuarios.edit',
+        'update' => 'admin.usuarios.update',
+        'destroy' => 'admin.usuarios.destroy',
+    ]);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

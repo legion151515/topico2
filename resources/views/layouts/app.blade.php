@@ -684,6 +684,13 @@
                     <i class="fas fa-chart-bar"></i> Reportes
                 </a>
             </li>
+            @if(auth()->user()->tipo_usuario === 'admin')
+            <li>
+                <a href="{{ route('admin.usuarios.index') }}" class="{{ request()->routeIs('admin.usuarios.*') ? 'active' : '' }}">
+                    <i class="fas fa-user-shield"></i> Gestión de Usuarios
+                </a>
+            </li>
+            @endif
         </ul>
     </aside>
 

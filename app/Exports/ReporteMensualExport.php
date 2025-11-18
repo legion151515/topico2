@@ -34,9 +34,9 @@ class ReporteMensualExport implements FromCollection, WithHeadings, WithMapping,
             'motivo',
             'medicamentos'
         ])
-        ->whereYear('fecha_atencion', $this->anio)
-        ->whereMonth('fecha_atencion', $this->mes)
-        ->orderBy('fecha_atencion', 'asc')
+        ->whereYear('fecha', $this->anio)
+        ->whereMonth('fecha', $this->mes)
+        ->orderBy('fecha', 'asc')
         ->orderBy('hora_entrada', 'asc')
         ->get();
     }
@@ -108,7 +108,7 @@ class ReporteMensualExport implements FromCollection, WithHeadings, WithMapping,
 
         return [
             $index,
-            Carbon::parse($atencion->fecha_atencion)->format('d/m/Y'),
+            Carbon::parse($atencion->fecha)->format('d/m/Y'),
             Carbon::parse($atencion->hora_entrada)->format('H:i'),
             $carrera,
             $semestre,

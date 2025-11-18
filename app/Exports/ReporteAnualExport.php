@@ -32,8 +32,8 @@ class ReporteAnualExport implements FromCollection, WithHeadings, WithMapping, W
             'motivo',
             'medicamentos'
         ])
-        ->whereYear('fecha_atencion', $this->anio)
-        ->orderBy('fecha_atencion', 'asc')
+        ->whereYear('fecha', $this->anio)
+        ->orderBy('fecha', 'asc')
         ->orderBy('hora_entrada', 'asc')
         ->get();
     }
@@ -105,7 +105,7 @@ class ReporteAnualExport implements FromCollection, WithHeadings, WithMapping, W
 
         return [
             $index,
-            Carbon::parse($atencion->fecha_atencion)->format('d/m/Y'),
+            Carbon::parse($atencion->fecha)->format('d/m/Y'),
             Carbon::parse($atencion->hora_entrada)->format('H:i'),
             $carrera,
             $semestre,

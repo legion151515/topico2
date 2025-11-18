@@ -49,7 +49,7 @@
                         @foreach($atenciones as $index => $atencion)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ \Carbon\Carbon::parse($atencion->fecha_atencion)->format('d/m/Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($atencion->fecha)->format('d/m/Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($atencion->hora_entrada)->format('H:i') }}</td>
                                 <td>
                                     @if($atencion->paciente && $atencion->paciente->carrera)

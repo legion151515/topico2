@@ -137,9 +137,9 @@ class ReporteController extends Controller
             'motivo',
             'medicamentos'
         ])
-        ->whereYear('fecha_atencion', $anio)
-        ->whereMonth('fecha_atencion', $mes)
-        ->orderBy('fecha_atencion', 'asc')
+        ->whereYear('fecha', $anio)
+        ->whereMonth('fecha', $mes)
+        ->orderBy('fecha', 'asc')
         ->orderBy('hora_entrada', 'asc')
         ->get();
 
@@ -167,9 +167,9 @@ class ReporteController extends Controller
             'motivo',
             'medicamentos'
         ])
-        ->whereYear('fecha_atencion', $anio)
-        ->whereMonth('fecha_atencion', $mes)
-        ->orderBy('fecha_atencion', 'asc')
+        ->whereYear('fecha', $anio)
+        ->whereMonth('fecha', $mes)
+        ->orderBy('fecha', 'asc')
         ->orderBy('hora_entrada', 'asc')
         ->get();
 
@@ -231,8 +231,8 @@ class ReporteController extends Controller
             'motivo',
             'medicamentos'
         ])
-        ->whereYear('fecha_atencion', $anio)
-        ->orderBy('fecha_atencion', 'asc')
+        ->whereYear('fecha', $anio)
+        ->orderBy('fecha', 'asc')
         ->orderBy('hora_entrada', 'asc')
         ->get();
 
@@ -256,8 +256,8 @@ class ReporteController extends Controller
             'motivo',
             'medicamentos'
         ])
-        ->whereYear('fecha_atencion', $anio)
-        ->orderBy('fecha_atencion', 'asc')
+        ->whereYear('fecha', $anio)
+        ->orderBy('fecha', 'asc')
         ->orderBy('hora_entrada', 'asc')
         ->get();
 
