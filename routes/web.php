@@ -75,6 +75,11 @@ Route::middleware(['auth', 'personal'])->group(function () {
     Route::get('/reportes/anual/pdf', [ReporteController::class, 'anualPDF'])->name('reportes.anual.pdf');
     Route::get('/reportes/anual/excel', [ReporteController::class, 'anualExcel'])->name('reportes.anual.excel');
 
+    // Reportes por Usuario
+    Route::get('/reportes/por-usuario', [ReporteController::class, 'porUsuario'])->name('reportes.por-usuario');
+    Route::post('/reportes/por-usuario/reporte', [ReporteController::class, 'porUsuarioReporte'])->name('reportes.por-usuario.reporte');
+    Route::get('/reportes/por-usuario/pdf', [ReporteController::class, 'porUsuarioPDF'])->name('reportes.por-usuario.pdf');
+
     // Gestión de Usuarios (solo accesible por el personal, se valida dentro del controlador que sea admin)
     Route::resource('admin/usuarios', AdminUsuariosController::class)->names([
         'index' => 'admin.usuarios.index',
