@@ -286,6 +286,141 @@ class ReporteController extends Controller
     }
 
     // =====================================================
+    // REPORTES POR USUARIO
+    // =====================================================
+
+    /**
+     * Mostrar formulario de selección de usuario y periodo
+     */
+    public function porUsuario()
+    {
+        $usuarios = \App\Models\User::where('tipo_usuario', '!=', 'estudiante')
+            ->orderBy('name')
+            ->get();
+        return view('reportes.por-usuario', compact('usuarios'));
+    }
+
+    /**
+     * Generar reporte de actividad por usuario
+     */
+    public function porUsuarioReporte(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'periodo' => 'required|in:total,mes,anio',
+        ]);
+
+        $usuario = \App\Models\User::findOrFail($request->user_id);
+        $periodo = $request->periodo;
+
+        // Consulta base
+        $query = Atencion::with(['paciente.carrera', 'paciente.nivel', 'motivo', 'medicamentos'])
+            ->where('user_id', $usuario->id);
+
+        // Filtrar por periodo
+        if ($periodo === 'mes') {
+            $request->validate([
+                'mes' => 'required|integer|min:1|max:12',
+                'anio' => 'required|integer|min:2020|max:2100',
+            ]);
+            $query->whereYear('fecha', $request->anio)
+                  ->whereMonth('fecha', $request->mes);
+            $nombrePeriodo = $this->obtenerNombreMes($request->mes) . ' ' . $request->anio;
+        } elseif ($periodo === 'anio') {
+            $request->validate([
+                'anio' => 'required|integer|min:2020|max:2100',
+            ]);
+            $query->whereYear('fecha', $request->anio);
+            $nombrePeriodo = 'Año ' . $request->anio;
+        } else {
+            $nombrePeriodo = 'Total (Todas las atenciones)';
+        }
+
+        $atenciones = $query->orderBy('fecha', 'desc')
+                           ->orderBy('hora_entrada', 'desc')
+                           ->get();
+
+        // Estadísticas
+        $totalAtenciones = $atenciones->count();
+        $pacientesUnicos = $atenciones->pluck('paciente_id')->unique()->count();
+
+        // Medicamentos más utilizados
+        $medicamentosUsados = [];
+        foreach ($atenciones as $atencion) {
+            foreach ($atencion->medicamentos as $med) {
+                $nombre = $med->nombre;
+                $cantidad = $med->pivot->cantidad_usada ?? 0;
+
+                if (!isset($medicamentosUsados[$nombre])) {
+                    $medicamentosUsados[$nombre] = 0;
+                }
+                $medicamentosUsados[$nombre] += $cantidad;
+            }
+        }
+        arsort($medicamentosUsados);
+
+        // Motivos más frecuentes
+        $motivosFrecuentes = $atenciones->groupBy(function($atencion) {
+            return $atencion->motivo->nombre ?? $atencion->motivo_otro ?? 'Sin especificar';
+        })->map->count()->sortDesc();
+
+        return view('reportes.por-usuario-resultado', compact(
+            'usuario',
+            'periodo',
+            'nombrePeriodo',
+            'atenciones',
+            'totalAtenciones',
+            'pacientesUnicos',
+            'medicamentosUsados',
+            'motivosFrecuentes'
+        ));
+    }
+
+    /**
+     * Generar PDF del reporte por usuario
+     */
+    public function porUsuarioPDF(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'periodo' => 'required|in:total,mes,anio',
+        ]);
+
+        $usuario = \App\Models\User::findOrFail($request->user_id);
+        $periodo = $request->periodo;
+
+        // Consulta base
+        $query = Atencion::with(['paciente.carrera', 'paciente.nivel', 'motivo', 'medicamentos'])
+            ->where('user_id', $usuario->id);
+
+        // Filtrar por periodo
+        if ($periodo === 'mes') {
+            $query->whereYear('fecha', $request->anio)
+                  ->whereMonth('fecha', $request->mes);
+            $nombrePeriodo = $this->obtenerNombreMes($request->mes) . ' ' . $request->anio;
+        } elseif ($periodo === 'anio') {
+            $query->whereYear('fecha', $request->anio);
+            $nombrePeriodo = 'Año ' . $request->anio;
+        } else {
+            $nombrePeriodo = 'Total';
+        }
+
+        $atenciones = $query->orderBy('fecha', 'desc')->get();
+        $totalAtenciones = $atenciones->count();
+        $pacientesUnicos = $atenciones->pluck('paciente_id')->unique()->count();
+
+        $pdf = Pdf::loadView('reportes.por-usuario-pdf', compact(
+            'usuario',
+            'nombrePeriodo',
+            'atenciones',
+            'totalAtenciones',
+            'pacientesUnicos'
+        ))->setPaper('a4', 'landscape');
+
+        return $pdf->download('Reporte_Usuario_' . str_replace(' ', '_', $usuario->name) . '_' . $nombrePeriodo . '.pdf');
+    }
+
+    // =====================================================
     // MÉTODOS AUXILIARES
     // =====================================================
 

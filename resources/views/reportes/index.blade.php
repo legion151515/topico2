@@ -48,6 +48,15 @@
             <i class="fas fa-file-excel"></i> Generar Reporte
         </a>
     </div>
+
+    <div class="card" style="text-align: center; padding: 35px; border: none; background: linear-gradient(135deg, #E91E63 0%, #C2185B 100%); color: white; transition: all 0.3s ease; cursor: pointer;">
+        <i class="fas fa-user-md" style="font-size: 55px; margin-bottom: 20px; opacity: 0.95;"></i>
+        <h3 style="margin: 15px 0; font-weight: 600; color: white;">Actividad por Usuario</h3>
+        <p style="opacity: 0.9; margin-bottom: 20px;">Atenciones, pacientes y recursos por usuario</p>
+        <a href="{{ route('reportes.por-usuario') }}" class="btn" style="background: rgba(255,255,255,0.25); color: white; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px);">
+            <i class="fas fa-user-chart"></i> Generar Reporte
+        </a>
+    </div>
 </div>
 
 <style>
