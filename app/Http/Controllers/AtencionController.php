@@ -13,7 +13,7 @@ class AtencionController extends Controller
 {
     public function index()
     {
-        $atenciones = Atencion::with(['paciente.carrera', 'paciente.nivel', 'motivo', 'medicamentos'])
+        $atenciones = Atencion::with(['paciente.carrera', 'paciente.nivel', 'motivo', 'medicamentos', 'user'])
             ->orderBy('created_at', 'desc')
             ->paginate(5);
         return view('atenciones.index', compact('atenciones'));
@@ -175,6 +175,7 @@ class AtencionController extends Controller
 
     $atencion = Atencion::create([
         'paciente_id' => $paciente->id,
+        'user_id' => auth()->id(),  // Registrar quién atendió al paciente
         'categoria' => $request->categoria,        // Snapshot: categoría al momento de la atención
         'nivel_id' => $nivel->id,                  // Snapshot: nivel_id para mostrar en INDEX
         'semestre' => $request->semestre,          // Snapshot: semestre al momento de la atención
@@ -242,13 +243,13 @@ class AtencionController extends Controller
 
     public function show(string $id)
     {
-        $atencion = Atencion::with(['paciente.carrera', 'motivo', 'medicamentos'])->findOrFail($id);
+        $atencion = Atencion::with(['paciente.carrera', 'motivo', 'medicamentos', 'user'])->findOrFail($id);
         return view('atenciones.show', compact('atencion'));
     }
 
     public function edit(string $id)
     {
-        $atencion = Atencion::with(['paciente.carrera', 'paciente.nivel', 'motivo', 'medicamentos'])->findOrFail($id);
+        $atencion = Atencion::with(['paciente.carrera', 'paciente.nivel', 'motivo', 'medicamentos', 'user'])->findOrFail($id);
         $motivos = MotivoConsulta::all();
         $medicamentos = Medicamento::all();
         return view('atenciones.edit', compact('atencion', 'motivos', 'medicamentos'));

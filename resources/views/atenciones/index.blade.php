@@ -30,6 +30,7 @@
                             <th><i class="fas fa-tag"></i> Acrónimo</th>
                             <th><i class="fas fa-id-card"></i> DNI</th>
                             <th><i class="fas fa-notes-medical"></i> Motivo</th>
+                            <th><i class="fas fa-user-md"></i> Atendido Por</th>
                             <th><i class="fas fa-sign-in-alt"></i> Entrada</th>
                             <th><i class="fas fa-sign-out-alt"></i> Salida</th>
                             <th><i class="fas fa-pills"></i> Medicamentos</th>
@@ -72,6 +73,15 @@
                                         <span class="badge badge-info">{{ $atencion->motivo->nombre }}</span>
                                     @else
                                         {{ $atencion->motivo_otro }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($atencion->user)
+                                        <span class="badge badge-success" style="background: linear-gradient(135deg, #20C997 0%, #17A2B8 100%);">
+                                            <i class="fas fa-user-md"></i> {{ $atencion->user->name }}
+                                        </span>
+                                    @else
+                                        <span class="text-muted">No registrado</span>
                                     @endif
                                 </td>
                                 <td>{{ $atencion->hora_entrada }}</td>

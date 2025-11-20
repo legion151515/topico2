@@ -8,6 +8,7 @@ class Atencion extends Model
 {
     protected $fillable = [
         'paciente_id',
+        'user_id',  // Usuario que atendió al paciente
         'categoria',
         'nivel_id',
         'semestre',
@@ -28,6 +29,11 @@ class Atencion extends Model
     public function paciente()
     {
         return $this->belongsTo(Paciente::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function motivo()

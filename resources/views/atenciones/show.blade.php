@@ -95,6 +95,19 @@
                             @endif
                         </td>
                     </tr>
+                    <tr style="background: linear-gradient(135deg, rgba(32, 201, 151, 0.1) 0%, rgba(23, 162, 184, 0.1) 100%);">
+                        <th><i class="fas fa-user-md"></i> Atendido Por:</th>
+                        <td>
+                            @if($atencion->user)
+                                <span class="badge badge-success" style="background: linear-gradient(135deg, #20C997 0%, #17A2B8 100%); font-size: 14px; padding: 8px 12px;">
+                                    <i class="fas fa-user-md"></i> {{ $atencion->user->name }}
+                                </span>
+                                <br><small class="text-muted">{{ ucfirst($atencion->user->tipo_usuario) }}</small>
+                            @else
+                                <span class="text-danger"><i class="fas fa-exclamation-triangle"></i> No registrado</span>
+                            @endif
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>

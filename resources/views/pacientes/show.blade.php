@@ -94,6 +94,7 @@
                             <th>Hora Entrada</th>
                             <th>Hora Salida</th>
                             <th>Motivo</th>
+                            <th>Atendido Por</th>
                             <th>Medicamentos</th>
                             <th>Tipo Salida</th>
                         </tr>
@@ -109,6 +110,15 @@
                                         {{ $atencion->motivo->nombre }}
                                     @else
                                         {{ $atencion->motivo_otro }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($atencion->user)
+                                        <span class="badge badge-success" style="background: linear-gradient(135deg, #20C997 0%, #17A2B8 100%);">
+                                            {{ $atencion->user->name }}
+                                        </span>
+                                    @else
+                                        <span class="text-muted">-</span>
                                     @endif
                                 </td>
                                 <td>
