@@ -60,13 +60,53 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label>Tipo de Unidad *</label>
+                        <select name="tipo_unidad" id="tipo_unidad" class="form-control @error('tipo_unidad') is-invalid @enderror" required>
+                            <option value="unidad" {{ old('tipo_unidad') == 'unidad' ? 'selected' : '' }}>Unidades (pastillas, tabletas, cápsulas)</option>
+                            <option value="ml" {{ old('tipo_unidad') == 'ml' ? 'selected' : '' }}>Mililitros (ml) - Líquidos</option>
+                            <option value="gr" {{ old('tipo_unidad') == 'gr' ? 'selected' : '' }}>Gramos (gr) - Pomadas, cremas</option>
+                            <option value="ampolla" {{ old('tipo_unidad') == 'ampolla' ? 'selected' : '' }}>Ampollas</option>
+                            <option value="sobre" {{ old('tipo_unidad') == 'sobre' ? 'selected' : '' }}>Sobres</option>
+                            <option value="otros" {{ old('tipo_unidad') == 'otros' ? 'selected' : '' }}>Otros</option>
+                        </select>
+                        @error('tipo_unidad')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <small class="form-text text-muted">¿En qué se mide este medicamento?</small>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Presentación</label>
+                        <input type="text" name="presentacion" class="form-control @error('presentacion') is-invalid @enderror"
+                               value="{{ old('presentacion') }}" placeholder="Ej: 1000ml, 500mg, 100 unidades">
+                        @error('presentacion')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <small class="form-text text-muted">Contenido del envase o presentación comercial</small>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(29, 112, 184, 0.1) 0%, rgba(13, 110, 253, 0.1) 100%); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid #1D70B8;">
+                <p style="margin: 0; color: #1D70B8; font-weight: 600;"><i class="fas fa-info-circle"></i> Información Importante sobre Stock:</p>
+                <p style="margin: 5px 0 0 0; font-size: 14px;" id="stock_info_text">
+                    Ingresa la cantidad en <strong>unidades</strong>. Ejemplo: si tienes 50 pastillas, ingresa 50.
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label>Cantidad en Stock *</label>
-                        <input type="number" name="cantidad_stock"
+                        <input type="number" name="cantidad_stock" id="cantidad_stock"
                                class="form-control @error('cantidad_stock') is-invalid @enderror"
-                               value="{{ old('cantidad_stock', 0) }}" min="0" required>
+                               value="{{ old('cantidad_stock', 0) }}" min="0" step="any" required>
                         @error('cantidad_stock')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                        <small class="form-text text-muted" id="stock_unit_label">En unidades</small>
                     </div>
                 </div>
 
@@ -95,4 +135,47 @@
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tipoUnidadSelect = document.getElementById('tipo_unidad');
+    const stockInfoText = document.getElementById('stock_info_text');
+    const stockUnitLabel = document.getElementById('stock_unit_label');
+
+    const textos = {
+        'unidad': {
+            info: 'Ingresa la cantidad en <strong>unidades</strong>. Ejemplo: si tienes 50 pastillas, ingresa 50.',
+            label: 'En unidades'
+        },
+        'ml': {
+            info: 'Ingresa la cantidad en <strong>mililitros (ml)</strong>. Ejemplo: si tienes una botella de 1000ml y tienes 3 botellas completas, ingresa 3000. Si usaste 100ml, te quedan 2900ml.',
+            label: 'En mililitros (ml)'
+        },
+        'gr': {
+            info: 'Ingresa la cantidad en <strong>gramos (gr)</strong>. Ejemplo: si tienes un tubo de 50gr y tienes 2 tubos, ingresa 100.',
+            label: 'En gramos (gr)'
+        },
+        'ampolla': {
+            info: 'Ingresa la cantidad en <strong>ampollas</strong>. Ejemplo: si tienes 20 ampollas, ingresa 20.',
+            label: 'En ampollas'
+        },
+        'sobre': {
+            info: 'Ingresa la cantidad en <strong>sobres</strong>. Ejemplo: si tienes 30 sobres, ingresa 30.',
+            label: 'En sobres'
+        },
+        'otros': {
+            info: 'Ingresa la cantidad en la unidad correspondiente.',
+            label: 'En la unidad correspondiente'
+        }
+    };
+
+    tipoUnidadSelect.addEventListener('change', function() {
+        const tipo = this.value;
+        if (textos[tipo]) {
+            stockInfoText.innerHTML = textos[tipo].info;
+            stockUnitLabel.textContent = textos[tipo].label;
+        }
+    });
+});
+</script>
 @endsection

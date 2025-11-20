@@ -24,16 +24,48 @@
                         <td>{{ $medicamento->descripcion ?? 'No especificada' }}</td>
                     </tr>
                     <tr>
+                        <th>Tipo de Unidad:</th>
+                        <td>
+                            @php
+                                $unidades = [
+                                    'unidad' => 'Unidades',
+                                    'ml' => 'Mililitros (ml)',
+                                    'gr' => 'Gramos (gr)',
+                                    'ampolla' => 'Ampollas',
+                                    'sobre' => 'Sobres',
+                                    'otros' => 'Otros'
+                                ];
+                                $unidadCorta = [
+                                    'unidad' => 'unidades',
+                                    'ml' => 'ml',
+                                    'gr' => 'gr',
+                                    'ampolla' => 'ampollas',
+                                    'sobre' => 'sobres',
+                                    'otros' => ''
+                                ];
+                            @endphp
+                            <span class="badge badge-info">
+                                {{ $unidades[$medicamento->tipo_unidad] ?? $medicamento->tipo_unidad }}
+                            </span>
+                        </td>
+                    </tr>
+                    @if($medicamento->presentacion)
+                    <tr>
+                        <th>Presentación:</th>
+                        <td>{{ $medicamento->presentacion }}</td>
+                    </tr>
+                    @endif
+                    <tr>
                         <th>Cantidad en Stock:</th>
                         <td>
                             <span class="badge badge-{{ $medicamento->cantidad_stock < $medicamento->stock_minimo_alerta ? 'danger' : 'success' }} badge-lg">
-                                {{ $medicamento->cantidad_stock }} unidades
+                                {{ $medicamento->cantidad_stock }} {{ $unidadCorta[$medicamento->tipo_unidad] ?? '' }}
                             </span>
                         </td>
                     </tr>
                     <tr>
                         <th>Stock Mínimo:</th>
-                        <td>{{ $medicamento->stock_minimo_alerta }} unidades</td>
+                        <td>{{ $medicamento->stock_minimo_alerta }} {{ $unidadCorta[$medicamento->tipo_unidad] ?? '' }}</td>
                     </tr>
                     <tr>
                         <th>Fecha de Vencimiento:</th>
@@ -117,7 +149,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <strong>{{ $atencion->pivot->cantidad_usada ?? 0 }}</strong> unidades
+                                    <strong>{{ $atencion->pivot->cantidad_usada ?? 0 }}</strong> {{ $unidadCorta[$medicamento->tipo_unidad] ?? '' }}
                                 </td>
                                 <td>{{ $atencion->pivot->observaciones ?? '-' }}</td>
                             </tr>

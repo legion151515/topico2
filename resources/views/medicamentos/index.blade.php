@@ -26,6 +26,7 @@
                     <tr>
                         <th><i class="fas fa-pills"></i> Nombre</th>
                         <th><i class="fas fa-file-alt"></i> Descripción</th>
+                        <th><i class="fas fa-balance-scale"></i> Unidad</th>
                         <th><i class="fas fa-boxes"></i> Stock Actual</th>
                         <th><i class="fas fa-exclamation-triangle"></i> Stock Mínimo</th>
                         <th><i class="fas fa-calendar-times"></i> Fecha Vencimiento</th>
@@ -36,8 +37,28 @@
                 <tbody>
                     @forelse($medicamentos as $medicamento)
                         <tr style="{{ $medicamento->cantidad_stock < $medicamento->stock_minimo_alerta ? 'background-color: #FFF3CD;' : '' }}">
-                            <td><strong>{{ $medicamento->nombre }}</strong></td>
+                            <td>
+                                <strong>{{ $medicamento->nombre }}</strong>
+                                @if($medicamento->presentacion)
+                                    <br><small class="text-muted">{{ $medicamento->presentacion }}</small>
+                                @endif
+                            </td>
                             <td>{{ $medicamento->descripcion ?? 'N/A' }}</td>
+                            <td>
+                                @php
+                                    $unidades = [
+                                        'unidad' => 'Unidades',
+                                        'ml' => 'ml',
+                                        'gr' => 'gr',
+                                        'ampolla' => 'Ampollas',
+                                        'sobre' => 'Sobres',
+                                        'otros' => 'Otros'
+                                    ];
+                                @endphp
+                                <span class="badge badge-info">
+                                    {{ $unidades[$medicamento->tipo_unidad] ?? $medicamento->tipo_unidad }}
+                                </span>
+                            </td>
                             <td>
                                 <span class="badge badge-{{ $medicamento->cantidad_stock < $medicamento->stock_minimo_alerta ? 'danger' : 'success' }}">
                                     <i class="fas fa-{{ $medicamento->cantidad_stock < $medicamento->stock_minimo_alerta ? 'exclamation-circle' : 'check' }}"></i>
@@ -85,7 +106,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center">No hay medicamentos registrados</td>
+                            <td colspan="8" class="text-center">No hay medicamentos registrados</td>
                         </tr>
                     @endforelse
                 </tbody>

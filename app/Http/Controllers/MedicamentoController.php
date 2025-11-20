@@ -32,8 +32,10 @@ class MedicamentoController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|max:255',
             'descripcion' => 'nullable|max:500',
-            'cantidad_stock' => 'required|integer|min:0',
-            'stock_minimo_alerta' => 'required|integer|min:0',
+            'tipo_unidad' => 'required|in:unidad,ml,gr,ampolla,sobre,otros',
+            'presentacion' => 'nullable|max:100',
+            'cantidad_stock' => 'required|numeric|min:0',
+            'stock_minimo_alerta' => 'required|numeric|min:0',
             'fecha_vencimiento' => 'nullable|date'
         ]);
 
@@ -71,8 +73,10 @@ class MedicamentoController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|max:255',
             'descripcion' => 'nullable|max:500',
-            'cantidad_stock' => 'required|integer|min:0',
-            'stock_minimo_alerta' => 'required|integer|min:0',
+            'tipo_unidad' => 'required|in:unidad,ml,gr,ampolla,sobre,otros',
+            'presentacion' => 'nullable|max:100',
+            'cantidad_stock' => 'required|numeric|min:0',
+            'stock_minimo_alerta' => 'required|numeric|min:0',
             'fecha_vencimiento' => 'nullable|date'
         ]);
 

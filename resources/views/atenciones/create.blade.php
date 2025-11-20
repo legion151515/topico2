@@ -200,22 +200,37 @@
 
             <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
                 @foreach($medicamentos as $med)
+                    @php
+                        $unidadesMap = [
+                            'unidad' => 'unidades',
+                            'ml' => 'ml',
+                            'gr' => 'gr',
+                            'ampolla' => 'ampollas',
+                            'sobre' => 'sobres',
+                            'otros' => ''
+                        ];
+                        $unidadLabel = $unidadesMap[$med->tipo_unidad] ?? 'unidades';
+                    @endphp
                     <div style="padding: 15px; background: white; border-radius: 6px; border-left: 4px solid #4CAF50;">
                         <div style="display: flex; align-items: flex-start; gap: 10px;">
                             <input type="checkbox" id="med_{{ $med->id }}" name="medicamentos[{{ $med->id }}]" value="{{ $med->id }}" onchange="toggleCantidad({{ $med->id }})">
 
                             <div style="flex: 1;">
-                                <strong>{{ $med->nombre }}</strong><br>
+                                <strong>{{ $med->nombre }}</strong>
+                                @if($med->presentacion)
+                                    <span style="color: #666; font-size: 12px;"> ({{ $med->presentacion }})</span>
+                                @endif
+                                <br>
                                 <small style="color: #666;">Vencimiento: {{ $med->fecha_vencimiento }}</small><br>
                                 @if($med->cantidad_stock < $med->stock_minimo_alerta)
-                                    <span class="badge badge-danger">Stock bajo: {{ $med->cantidad_stock }}</span>
+                                    <span class="badge badge-danger">Stock bajo: {{ $med->cantidad_stock }} {{ $unidadLabel }}</span>
                                 @else
-                                    <span class="badge badge-info">Stock: {{ $med->cantidad_stock }}</span>
+                                    <span class="badge badge-info">Stock: {{ $med->cantidad_stock }} {{ $unidadLabel }}</span>
                                 @endif
                             </div>
                         </div>
 
-                        <input type="number" class="cantidad_input" id="cantidad_{{ $med->id }}" name="cantidad[{{ $med->id }}]" min="1" max="{{ $med->cantidad_stock }}" placeholder="Cantidad" disabled style="margin-top: 10px; width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <input type="number" class="cantidad_input" id="cantidad_{{ $med->id }}" name="cantidad[{{ $med->id }}]" min="0.01" step="any" max="{{ $med->cantidad_stock }}" placeholder="Cantidad en {{ $unidadLabel }}" disabled style="margin-top: 10px; width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
                     </div>
                 @endforeach
             </div>
